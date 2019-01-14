@@ -1,0 +1,99 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  background: #333;
+  background-size: cover;
+  background-size: cover;
+  background-attachment: fixed;
+   font-family: Roboto;
+}
+.contendedor-form{
+  position: relative;
+background: rgba(0,0,0,.7);
+width: 100%;
+max-width: 500px;
+margin: 48px auto;
+color: #fff;
+border-radius: 5px;
+/*padding: 40px;*/
+
+}
+
+.contendedor-form .toggle{
+position: absolute;
+top: 7px;
+right: 7px;
+width: 100px;
+height: 30px;
+font-size: 12px;
+line-height: 25px;
+text-align: center;
+border-top: 2px solid #8F8E8E;
+border-bottom: : 2px solid #8F8E8E;
+transition: all .5s ease;
+cursor: pointer;
+}
+.contendedor-form .toggle span{
+  letter-spacing: 1px;
+}
+.contendedor-form .toggle:hover{
+  border-top: 2px solid #ECEBEB;
+  border-bottom: : 2px solid #ECEBEB;
+}
+.contendedor-form h2{
+  margin:0 0 28px 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+}
+.contendedor-form input[type="text"],
+.contendedor-form input[type="password"],
+.contendedor-form input[type="email"]{
+  outline: none;
+  background: rgba(0,0,0,.5);
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  color: #fff;
+  border:none;
+  border-radius: 2px;
+  border-bottom: 4px solid #BCBBBB;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  margin:0 0 20px 0;
+  transition: all .5s ease;
+}
+.contendedor-form input[type="text"]:focus,
+.contendedor-form input[type="password"]:focus,
+.contendedor-form input[type="email"]:focus{
+  border-bottom: 4px solid #6D5D5D;
+}
+.contendedor-form input[type="submit"]{
+background: #A89696;
+color: #fff;
+border: none;
+width: 100%;
+padding: 10px 0;
+font-weight: normal;
+font-family: Roboto;
+letter-spacing: 1px;
+font-size: 16px;
+cursor: pointer;
+transition: all .5s ease;
+}
+.contendedor-form input[type="submit"]:hover{
+background: rgba(66, 73, 73,0.7);
+}
+.contendedor-form .formulario{
+padding: 40px;
+display: none;
+}
+.contendedor-form .formulario:nth-child(2){
+  display: block;
+}

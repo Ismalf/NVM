@@ -1,0 +1,76 @@
+.cc {
+    text-align: center;
+    align-content: center;
+}
+p {
+    cursor: default;
+}
+
+a{
+    color: #000;
+    transition: 0.3s;
+}
+a:hover{
+    color: #fff;
+    text-decoration: none;
+    
+    text-shadow: 0px 0px 7px #000000;
+}
+
+h4,h3,h1,h2{
+    cursor: default;
+    transition: 0.3s;
+}
+h4:hover,h3:hover,h1:hover,h2:hover{
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0px 0px 10px #000000;
+    
+}
+
+.albumimg:hover{
+    opacity: 0.5;
+}
+
+.albumcontainer{
+    height: auto;
+    max-height: 400px;
+    overflow-x: hidden;    
+}
+
+/*main container*/
+.maincontainer{
+    padding-top: 4rem;
+    padding-bottom: 3rem;
+}
+
+.artistcard{
+    transition: 1s;
+    cursor: pointer;
+}
+.artistcard:hover{
+    background-color: #333;
+    text-shadow: 0 0 1px #999;
+    color: white;
+    box-shadow: 0 2px 5px #555;
+    
+}
+.albumcard{
+    transition: 1s;
+    cursor: pointer;
+}
+.albumcard:hover{
+    background-color: #333;
+    text-shadow: 0 0 1px #999;
+    color: white;
+    box-shadow: 0 2px 5px #555;
+    
+}
+table{
+    border-collapse: collapse;
+    cursor: default;
+}
+th, td {
+    border-collapse: collapse;
+    border-bottom: 1px solid #ddd;
+}

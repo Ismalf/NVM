@@ -1,0 +1,48 @@
+<% include partials/_headerL %>
+    <div class="modal-dialog text-center" class="loginBox">
+        <div class="col-sm-8 main-section">
+            <div class="modal-content">
+                <div class="col-12 user-img">
+                    <img src="../assets/user.png" th:src="@{/user.png}"/>
+                </div>
+                <%if(message.lenght>0){%>
+                }
+                <div class="alert alert-danger">
+                  <%= message%>
+                </div>
+                <%}%>
+                <form class="col-12" th:action="/login"  method="post">
+                    <div class="form-group" id="user-group">
+                        <input type="text" class="form-control" placeholder="Nombre de usuario" name="username"/>
+                    </div>
+                    <div class="form-group" id="contrasena-group">
+                        <input type="password" class="form-control" placeholder="Contraseña" name="password"/>
+                    </div>
+                    <div class="col-12 forgot">
+                      <p>
+                      <input type="checkbox" name="sistoper" color="white" value="Recordar contraseña" > Recordar Contraseña
+                      </p>
+                        <!-- <a href="#">Recordar contrasena</a> -->
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="iniciar" ><i class="fas fa-sign-in-alt"></i><a href="/main">  Iniciar Sesión </a></button>
+                    <div>
+                        <a href="#">Olvidó su contraseña ?</a>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                      <p>Quieres registrate?<a href="/registro"> Registrarse</a></p>
+                    </div>
+                </form>
+            </div>
+            <br>
+            <!--<button type="submit" class="btn btn-primary" name="registrar"><i class="fas fa-sign-in-alt"></i>  Registrarte en Nova Music </button>-->
+        </div>
+
+    </div>
+    <!--JQUERY-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <% include partials/_footerL %>

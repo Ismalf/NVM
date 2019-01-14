@@ -1,0 +1,74 @@
+<% include partials/_headerI %>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <img class="navbar-brand" src="../assets/nm.png">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/registro">Register <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        </nav>
+
+        <main role="main">
+
+            <div class="jumbotron">
+
+                <div class="container">
+                    <div class="ocean">
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                </div>
+                    <h1 class="display-3">Nova Music</h1>
+                </div>
+            </div>
+
+            <div class="container" style="cursor: default">
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <h2>Nueva música. Nuevos Artistas.</h2>
+                        <p>
+                        Descubre un mundo de música nueva, Nova Music es una plataforma centrada en el trabajo de los nuevos talentos de la industria musical!
+                        </p>
+                        <p><a class="btn btn-primary btn-lg" href="/login" role="button">Discover &raquo;</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Para artistas que deseen darse a conocer.</h2>
+                        <p>¿Eres un artista con sed de éxito?<br>
+                        Esta plataforma te ayudará a difundir tu arte a todos aquellos interesados en descubrir nueva música.
+                        Se original, creativo y persistente!
+                        </p>
+                        <p><a class="btn btn-primary btn-lg" href="/registro" role="button">I'm an Artist! &raquo;</a></p>
+
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Para empresas en busca de nuevos talentos.</h2>
+                        <p>Esta plataforma tiene como objetivo reunir a todos los nuevos talentos de la industria.</p>
+                        <p>Como representante de una disquera puedes contactar directamente con los talentos más populares del mundo y ampliar su propuesta musical!</p>
+                        <p><a class="btn btn-primary btn-lg" href="/registro" role="button">Hire new talents! &raquo;</a></p>
+                    </div>
+                    <% %>
+                </div>
+                <hr>
+            </div>
+
+        </main>
+        <footer class="container">
+        NVE
+        </footer>
+        <!--JQuery code, Popper & bootstrap-->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="../js/bootstrap.min.js"></script>
+<% include partials/_footerI %>

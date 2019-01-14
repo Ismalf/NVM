@@ -1,0 +1,44 @@
+<% include partials/_headerR %>
+    <div class="contendedor-form">
+
+      <div class="formulario">
+        <center><div class="col-12 user-img">
+            <img src="../assets/user.png" th:src="@{/user.png}"/>
+        </div></center>
+        <center><h2>Registrar Usuario</h2></center>
+        <form action="/addU" method="post">
+          <input type="text" placeholder="Nombres" name="nombre" class="form-control" required>
+          <input type="text" placeholder="Apellidos" name="apellido" class="form-control" required>
+          <input type="text" placeholder="Usuario" name="usuario" class="form-control" required>
+          <input type="password" placeholder="Contraseña" name="pass" class="form-control" required>
+          <input type="password" placeholder="Repetir Contraseña" name="repetpass" class="form-control" required>
+          <input type="email" placeholder="Correo Electrónico" name="correo" class="form-control" required>
+          <input type="text" placeholder="Teléfono" name="telefono" class="form-control" required>
+          <input type="submit" class="btn btn-primary btn-block" value="Registrar Usuario">
+        </form>
+      </div>
+
+      <div class="formulario">
+        <center><div class="col-12 user-img">
+            <img src="../assets/empresa.png" th:src="@{/user.png}"/>
+        </div></center>
+        <center><h2>Registrar Empresa</h2></center>
+        <form action="/addE" method="post">
+          <input type="text" placeholder="Nombre de la empresa" name="nomEmp" class="form-control" required>
+          <input type="text" placeholder="Usuario" name="usuEmp" class="form-control" required>
+          <input type="password" placeholder="Contraseña"  name="passEmp" class="form-control" required>
+          <input type="password" placeholder="Repetir Contraseña" name="rpassEmp" class="form-control" required>
+          <input type="email" placeholder="Correo Electrónico" name="correoEmp" class="form-control" required>
+          <input type="text" placeholder="Teléfono" name="telfEmp" class="form-control" required>
+          <input type="submit" class="btn btn-primary btn-block" value="Registrar Empresa">
+        </form>
+      </div>
+      <div class="toggle">
+
+        <img src="../assets/flecha.png"  height="45px" width="80px">
+      </div>
+    </div>
+
+    <script src="../js/jquery.js"></script>
+    <script src="../js/main.js"></script>
+<% include partials/_footerR %>

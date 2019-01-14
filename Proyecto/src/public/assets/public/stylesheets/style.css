@@ -1,0 +1,16 @@
+body {
+  padding: 40px;
+  color: #F5F7F7;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #333;
+}
+a {
+  color: #fff;
+}
+.pato{
+    background-image: url('../assets/iconoUE.jpg');
+    /*background: url('pato.png') no-repeat;*/
+    height: 15px;
+    width: 25px;
+    position: absolute
+}
