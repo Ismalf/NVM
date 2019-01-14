@@ -12,7 +12,7 @@ var storage = multer.diskStorage({
         cb(null,'../media_files/tmp')
     },
     filename: function(req, file, cb){
-        cb(null, Date.now() + file.originalname);
+        cb(null, file.originalname);
     }
 });
 var upload = multer({storage:storage});
@@ -114,9 +114,27 @@ router.get('/profile', async (req, res) => {
            console.log(file); 
         });
     });
-    
-    const song = await Songs.find();
-    const album = await Albums.find();
-    res.render('profile',{song, album});
+    res.render('profile');
 });
+
+router.get('/main/albums', async (req, res) => {
+    fs.readdir('../media_files/Top/Top Albums', function(err, albums){
+        if(err){console.log(err);}
+        var title = 'Top Albums';
+        res.render('main',{albums, title});
+    });
+});
+
+router.get('/main/popartists', async (req, res) => {
+    fs.readdir('../media_files/', function(err, files){
+        if(err){console.log(err);}
+        var albums = [];
+        files.forEach(album =>{
+           if(album!='tmp' && album!='Top') albums.push(album);
+        });
+        var title = 'Top Artists';
+        res.render('main',{albums, title});
+    });
+});
+
 module.exports = router;

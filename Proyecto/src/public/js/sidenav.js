@@ -1,3 +1,5 @@
+var count = 0;
+
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
@@ -8,4 +10,9 @@ function openNav() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   document.getElementById("main").style.marginLeft = "0";
+}
+
+function clickedon(){
+    count++;
+    console.log("Clicked! "+count);
 }

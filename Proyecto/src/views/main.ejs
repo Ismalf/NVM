@@ -15,14 +15,14 @@
         <nav class="navbar navbar-expand-md navbar-dark fixed-top topnav">
             <img class="navbar-brand" src="../assets/nm.png">
         </nav>
-
+        <pre><%=albums%></pre>
         <span style="font-size:30px;cursor:pointer; margin-top: 0px; " onclick="openNav()">&#8943;</span>
         <div class="sidenav" id="mySidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> &times;</a>
             <a style="cursor: default">Recommended</a>
-            <a href="#">Popular Artists</a>
+            <a href="/main/popartists">Popular Artists</a>
             <a href="#">Popular Songs</a>
-            <a href="#">Top Albums</a>
+            <a href="/main/albums">Top Albums</a>
             <hr>
             <a style="cursor: default">Your Music</a>
             <a href="#">Liked Songs</a>
@@ -40,34 +40,35 @@
             <div class="container">
                 <div class="row">
                     <div class="col cc">
-                        <h2>Albums</h2>
+                        <h2 class="fadeineff"><%= title%></h2>
                     </div>
                 </div>
                 <!--Fill dynamically-->
                 <!--print 4 albums per row-->
                 <div class="albumcontainer" id="albumcontainer">
                     <div class="row cc mt-3">
-                        <div class="col-3">
-                            <div class="card albumcard">
-                                <div class="card-body">
-                                    <!--Album portrait-->
-                                    <img src="../assets/defaultdisc.png" class="albumimg">
-                                    <hr>
-                                    <!--Album title-->
-                                    <label id="album_title">Album title goes here</label>
-
+                        <%for(var i = 0; i < albums.length; i++){%>
+                            <div class="col-3">
+                                <div class="card albumcard fadeineff" onclick="clickedon()">
+                                    <div class="card-body">
+                                        <!--Album portrait-->
+                                        <img src="../assets/defaultdisc.png" class="albumimg">
+                                        <hr>
+                                        <!--Album title-->
+                                        <label id="album_title"><%=albums[i]%></label>
+                                    </div>
                                 </div>
-
                             </div>
-                        </div>
+                        <%}%>
                     </div>
                 </div>
             </div>
         </div>
 
-        <% include partials/_player %>
+        
         <script src="../js/sidenav.js"></script>
     </body>
     <footer>
+        <% include partials/_player %>
     </footer>
 </html>
