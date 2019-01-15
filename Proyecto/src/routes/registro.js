@@ -9,7 +9,7 @@ var formidable = require('formidable');
 var multer = require('multer');
 var storage = multer.diskStorage({
     destination: function(req, file,cb){
-        cb(null,'../media_files/tmp')
+        cb(null,'../src/public/media_files/tmp')
     },
     filename: function(req, file, cb){
         cb(null, file.originalname);
@@ -79,7 +79,7 @@ router.post('/upload_media', upload.any(), function (req, res)  {
     // Media Files -> 'Artist' -> 'Album' -> 'Song'
     // Default album: Single
     //-------------------------------------------------------------------------------------------------------------
-    var artist_album_song = '../media_files/'+req.body.artist+'/'+req.body.album;
+    var artist_album_song = '../src/public/media_files/'+req.body.artist+'/'+req.body.album;
     
     if(!fs.existsSync(artist_album_song)){
         //console.log('creating directory');
@@ -93,7 +93,7 @@ router.post('/upload_media', upload.any(), function (req, res)  {
     } 
     
     req.files.forEach((file)=>{
-        fs.rename('../media_files/tmp/'+file.originalname,artist_album_song+'/'+file.originalname, function(err){
+        fs.rename('../src/public/media_files/tmp/'+file.originalname,artist_album_song+'/'+file.originalname, function(err){
             if(err){
                 console.log(err);
             }else{
@@ -118,7 +118,7 @@ router.get('/profile', async (req, res) => {
 });
 
 router.get('/main/albums', async (req, res) => {
-    fs.readdir('../media_files/Top/Top Albums', function(err, albums){
+    fs.readdir('../src/public/media_files/Top/Top Albums', function(err, albums){
         if(err){console.log(err);}
         var title = 'Top Albums';
         res.render('main',{albums, title});
@@ -126,7 +126,7 @@ router.get('/main/albums', async (req, res) => {
 });
 
 router.get('/main/popartists', async (req, res) => {
-    fs.readdir('../media_files/', function(err, files){
+    fs.readdir('../src/public/media_files', function(err, files){
         if(err){console.log(err);}
         var albums = [];
         files.forEach(album =>{
