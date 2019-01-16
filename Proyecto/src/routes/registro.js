@@ -106,14 +106,7 @@ router.post('/upload_media', upload.any(), function (req, res)  {
 }); 
 router.get('/profile', async (req, res) => {
     //var files;
-    fs.readdir('../media_files', function(err, files){
-        if(err){
-            console.log(err);
-        }
-        files.forEach(file=>{
-           console.log(file); 
-        });
-    });
+    
     res.render('profile');
 });
 
