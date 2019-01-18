@@ -26,18 +26,23 @@ footer{
     background-image: linear-gradient(#000, #111);
 }
 .albumcard{
-    background-color: #333;
-    transition: 1s;
+    background-color: rgba(0,0,0,0);
+    transition: .3s;
     cursor: pointer;
-    
+    border-color: #333;
+    align-content: center;
+    justify-content: center;
 }
 .albumcard:hover{
-    background-color: #fff;
-    text-shadow: 0 0 1px #999;
-    color: #333;
-    box-shadow: 0 2px 5px #eee;
-    
+    /*background-color: #fff;*/
+    /*text-shadow: 0 0 1px #999;*/
+    /*color: #333;*/
+    /*background-image: url("../assets/defaultdisc.png");
+    background-repeat: no-repeat;
+    background-position: center;*/
+    box-shadow: 0 0 8px #fff;
 }
+
 .cc {
     text-align: center;
     align-content: center;
@@ -58,6 +63,7 @@ footer{
     padding-top: 80px; /* Place content 60px from the top */
     transition: 0.25s; /* 0.5 second transition effect to slide in the sidenav */
     padding-bottom: 100px;
+    border-right-color: white;
 }
 
 /* The navigation menu links */
@@ -90,7 +96,12 @@ footer{
   padding: 20px;
 }
 
-
+@media screen and (max-width: 425px){
+    .albumcard {
+        font-size: auto;
+        min-width: 90px;
+    }
+}
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}

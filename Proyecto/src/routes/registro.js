@@ -111,23 +111,52 @@ router.get('/profile', async (req, res) => {
 });
 
 router.get('/main/albums', async (req, res) => {
-    fs.readdir('../src/public/media_files/Top/Top Albums', function(err, albums){
-        if(err){console.log(err);}
-        var title = 'Top Albums';
-        res.render('main',{albums, title});
+    console.log('reading File');
+    var content = fs.readFileSync('../src/public/media_files/Top/TopAlbums.data','utf8');
+    console.log(content);
+    var contents = content.split('\r');
+    console.log('content');
+    var album_artist_model;
+    var topalbums=[];
+    contents.forEach(file => {
+        var tmp = file.split('/');
+        if(tmp[5]!='Single'){
+            album_artist_model = {
+                album: tmp[5],
+                artist: tmp[4]
+            }
+            console.log('Line:');
+            console.log(album_artist_model);
+            topalbums.push(album_artist_model);
+        }
     });
+    var artists=null;
+    var topsongs=null;
+    var title='Top Albums';
+    res.render('main',{topalbums, title, artists, topsongs});
 });
 
 router.get('/main/popartists', async (req, res) => {
-    fs.readdir('../src/public/media_files', function(err, files){
-        if(err){console.log(err);}
-        var albums = [];
-        files.forEach(album =>{
-           if(album!='tmp' && album!='Top') albums.push(album);
-        });
-        var title = 'Top Artists';
-        res.render('main',{albums, title});
+    var content = fs.readFileSync('../src/public/media_files/Top/TopArtists.data','utf8');
+    console.log(content);
+    var contents = content.split('\r');
+    console.log('content');
+    var artist_model;
+    var artists=[];
+    contents.forEach(file => {
+        var tmp = file.split('/');
+        artist_model = {
+            artist: tmp[4]
+        }
+        console.log('Line:');
+        console.log(artist_model);
+        artists.push(artist_model);
     });
-});
+    console.log(artists);
+    var topalbums = null;
+    var topsongs=null;
+    var title='Top Artists';
+    res.render('main',{topalbums, title, artists, topsongs});
+}); 
 
 module.exports = router;
