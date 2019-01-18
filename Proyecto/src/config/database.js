@@ -1,4 +1,9 @@
-module.exports={
-  //nombre de la base de datos
-'url': 'mongodb://localhost/nodelogin'
-};
+module.exports = {
+ 'connection':{
+  'host':'localhost',
+  'user':'root',
+  'password':'ismalfmp'
+ },
+ 'database':'prograavan',
+ 'user_table':'users'
+}

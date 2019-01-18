@@ -22,7 +22,7 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> &times;</a>
             <a style="cursor: default">Recommended</a>
             <a href="/main/popartists">Popular Artists</a>
-            <a href="#">Popular Songs</a>
+            <a href="/main/topsongs">Popular Songs</a>
             <a href="/main/albums">Top Albums</a>
             <hr>
             <a style="cursor: default">Your Music</a>
@@ -63,8 +63,7 @@
                     </div>
                 </div>
                 <%}else{%>
-                    <%for(var i = 0; i<topsongs.length; i++)%>
-                        <%include partials/_songstable%>
+                    <%include partials/_songstable%>
                 <%}%>
             </div>
         </div>
