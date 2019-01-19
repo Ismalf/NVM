@@ -29,7 +29,7 @@ module.exports=(app,passport)=>{
     });
 
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/main',
+        successRedirect: '/main/albums',
         failureRedirect: '/login',
         failureFlash: true
         }),
@@ -47,12 +47,12 @@ module.exports=(app,passport)=>{
     });
 
     app.post('/registro1', passport.authenticate('local-signup', {
-        successRedirect: '/main',
+        successRedirect: '/main/albums',
         failureRedirect: '/registro',
         failureFlash: true
     }));
     app.post('/registro2', passport.authenticate('local-signup1', {
-        successRedirect: '/main',
+        successRedirect: '/main/albums',
         failureRedirect: '/registro',
         failureFlash: true
     }));
