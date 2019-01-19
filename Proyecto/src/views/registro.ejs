@@ -6,31 +6,33 @@
             <img src="../assets/user.png" th:src="@{/user.png}"/>
         </div></center>
         <center><h2>Registrar Usuario</h2></center>
-        <form action="/addU" method="post">
+        <% if(message.length > 0) { %>
+          <div class="alert alert-danger"><%= message %></div>
+          <% } %>
+        <form action="/registro1" method="post">
           <input type="text" placeholder="Nombres" name="nombre" class="form-control" required>
           <input type="text" placeholder="Apellidos" name="apellido" class="form-control" required>
-          <input type="text" placeholder="Usuario" name="usuario" class="form-control" required>
-          <input type="password" placeholder="Contraseña" name="pass" class="form-control" required>
-          <input type="password" placeholder="Repetir Contraseña" name="repetpass" class="form-control" required>
-          <input type="email" placeholder="Correo Electrónico" name="correo" class="form-control" required>
+          <input type="text" placeholder="Usuario" name="username" class="form-control" required>
+          <input type="password" placeholder="Contraseña" name="password" class="form-control" required>
+          <input type="text" placeholder="Correo Electrónico" name="correo" class="form-control" required>
           <input type="text" placeholder="Teléfono" name="telefono" class="form-control" required>
-          <input type="submit" class="btn btn-primary btn-block" value="Registrar Usuario">
+          <input type="submit" class="btn btn-succcess btn-lg" value="Registrar Usuario">
         </form>
       </div>
+
 
       <div class="formulario">
         <center><div class="col-12 user-img">
             <img src="../assets/empresa.png" th:src="@{/user.png}"/>
         </div></center>
         <center><h2>Registrar Empresa</h2></center>
-        <form action="/addE" method="post">
-          <input type="text" placeholder="Nombre de la empresa" name="nomEmp" class="form-control" required>
-          <input type="text" placeholder="Usuario" name="usuEmp" class="form-control" required>
-          <input type="password" placeholder="Contraseña"  name="passEmp" class="form-control" required>
-          <input type="password" placeholder="Repetir Contraseña" name="rpassEmp" class="form-control" required>
-          <input type="email" placeholder="Correo Electrónico" name="correoEmp" class="form-control" required>
-          <input type="text" placeholder="Teléfono" name="telfEmp" class="form-control" required>
-          <input type="submit" class="btn btn-primary btn-block" value="Registrar Empresa">
+        <form action="/registro2" method="post">
+          <input type="text" placeholder="Nombres" name="nombreE" class="form-control" required>
+          <input type="text" placeholder="Usuario" name="usernameE" class="form-control" required>
+          <input type="password" placeholder="Contraseña" name="passwordE" class="form-control" required>
+          <input type="text" placeholder="Correo Electrónico" name="correoE" class="form-control" required>
+          <input type="text" placeholder="Teléfono" name="telefonoE" class="form-control" required>
+          <input type="submit" class="btn btn-succcess btn-lg" value="Registrar Usuario">
         </form>
       </div>
       <div class="toggle">
