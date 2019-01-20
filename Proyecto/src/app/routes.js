@@ -212,15 +212,29 @@ module.exports=(app,passport)=>{
     
     app.get('/profile/:artist', async (req, res) => {
         //leer toda la información necesaria de la base de datos
+        artinfo = {
+            usrname:"",
+            followers:"",
+            songs:"",
+            albums:"",
+            about:""
+        }
         //obtener albums del artista
-        var content = fs.readdirSync('../src/public/media_files/'+req.params.artist);
+        var albums = fs.readdirSync('../src/public/media_files/'+req.params.artist);
         //obtener todas las canciones del artista
         var songs = [];
-        content.forEach(file=>{
-           songs.push('../media_files/'+req.params.artist+'/'+req.params.album+'/'+file);
+        albums.forEach(album=>{
+            var tmp = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+album);
+            tmp.forEach(song => {
+                songs.push(song.split('.')[0]);    
+            });
+            
         });
+        artinfo.usrname = req.params.artist;
+        artinfo.songs = songs.length;
+        artinfo.albumss = albums.length;
         console.log(songs);
-        res.render('profile',{content});
+        res.render('profile',{albums, songs, artinfo});
     }); 
 
 };
