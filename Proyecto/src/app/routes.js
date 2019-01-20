@@ -199,6 +199,17 @@ module.exports=(app,passport)=>{
         res.render('main',{topalbums, title, artists, topsongs});
     }); 
 
+    //------------------- Get Album Playlist ------------------------------------------
+    app.get('/main/:artist/:album', async (req, res) => {
+        var content = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+req.params.album);
+        var songs = [];
+        content.forEach(file=>{
+           songs.push('../media_files/'+req.params.artist+'/'+req.params.album+'/'+file);
+        });
+        console.log(songs);
+        res.send(songs);
+    }); 
+
 };
 
 function isLoggedIn(req, res, next){
@@ -207,3 +218,7 @@ function isLoggedIn(req, res, next){
 
  res.redirect('/');
 }
+
+
+
+                                        

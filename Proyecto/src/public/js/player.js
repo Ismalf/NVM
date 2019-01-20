@@ -13,9 +13,10 @@ var player = audioPlayer.querySelector('audio');
 var currentTime = audioPlayer.querySelector('.current-time');
 var totalTime = audioPlayer.querySelector('.total-time');
 var speaker = audioPlayer.querySelector('#speaker');
-
 var draggableClasses = ['pin'];
 var currentlyDragged = null;
+
+
 
 window.addEventListener('mousedown', function (event) {
 
@@ -36,14 +37,24 @@ playpauseBtn.addEventListener('click', togglePlay);
 player.addEventListener('timeupdate', updateProgress);
 player.addEventListener('volumechange', updateVolume);
 player.addEventListener('loadedmetadata', function () {
+    playPause.attributes.d.value = "M0 0h6v24H0zM12 0h6v24h-6z";
   totalTime.textContent = formatTime(player.duration);
 });
 player.addEventListener('canplay', makePlay);
 player.addEventListener('ended', function () {
-  playPause.attributes.d.value = "M18 12L0 24V0";
-  player.currentTime = 0;
+    playPause.attributes.d.value = "M18 12L0 24V0";
+    player.currentTime = 0;
+     //If it reaches limit of playlist set counter to 0
+    if(i==playList.length) i = 0;
+    //else increment playlist element by 1
+    else i++;
+    console.log('another song:');
+    document.getElementById("sourcesound").src= playList[i];  
+    player.pause();
+    player.load();
+    player.play();
 });
-
+                                                   
 volumeBtn.addEventListener('click', function () {
   volumeBtn.classList.toggle('open');
   volumeControls.classList.toggle('hidden');
@@ -177,3 +188,65 @@ function directionAware() {
     volumeControls.style.left = '-3px';
   }
 }
+
+//------------------------------------------------ PlayList --------------------------------------------------
+
+
+var playList=[];
+var i = 0;
+
+
+
+function playalbum(album_id, artist_id){
+    //get the album directory
+    var dir = '/main/'+artist_id+'/'+album_id;
+    //load albums songs
+    loadFile(dir, setalbumplaylist);
+}
+
+//----------- func -------------
+function setalbumplaylist(xhttp){
+    //get the AJAX response
+    console.log('request');
+    console.log(xhttp.responseText);
+    //asing it to the playlist
+    var response = JSON.parse(xhttp.responseText);
+    console.log(response);
+    /*response.forEach(file=>{
+        console.log('new file:');
+        console.log(file);
+    });*/
+    playList = response;
+    //play the song at 0
+    console.log('source:');
+    document.getElementById("sourcesound").src= playList[0];  
+    player.pause();
+    player.load();
+    player.play();
+    
+}
+
+//------------------------------------------------- AJAX --------------------------------------
+function loadFile(filePath, func) {
+    var result = null;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            //If there is a response ready, pass it to the function
+            func(this);
+        }
+    };
+    xhttp.open("GET", filePath, true);
+    xhttp.send();
+}
+
+
+
+
+
+
+
+
+
+
+
