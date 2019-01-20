@@ -1,5 +1,10 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-bottom topnav">
-    <div class="audio green-audio-player">
+ 
+<div class="navbar navbar-expand-md navbar-dark fixed-bottom topnav" style="background-colo: rgba(0,0,0,0.6);">
+    <div class="mr-auto now">
+        <label class="mx-auto" >Playing:</label>
+        <marquee id="now-Playing" scrolldelay="500" ></marquee>
+    </div>
+    <div class="audio green-audio-player mx-auto">
         <div class="loading">
             <div class="spinner"></div>
         </div>
@@ -21,25 +26,28 @@
 
         <div class="volume">
             <div class="volume-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                <path fill="#fff" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker"/>
-                </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#566574" fill-rule="evenodd" d="M14.667 0v2.747c3.853 1.146 6.666 4.72 6.666 8.946 0 4.227-2.813 7.787-6.666 8.934v2.76C20 22.173 24 17.4 24 11.693 24 5.987 20 1.213 14.667 0zM18 11.693c0-2.36-1.333-4.386-3.333-5.373v10.707c2-.947 3.333-2.987 3.333-5.334zm-18-4v8h5.333L12 22.36V1.027L5.333 7.693H0z" id="speaker"/>
+              </svg>
             </div>
             <div class="volume-controls hidden">
-                <div class="slider" data-direction="vertical">
-                    <div class="progress">
-                        <div class="pin" id="volume-pin" data-method="changeVolume"></div>
-                    </div>
+              <div class="slider" data-direction="vertical">
+                <div class="progress">
+                  <div class="pin" id="volume-pin" data-method="changeVolume"></div>
                 </div>
+              </div>
             </div>
-        </div>
+      </div>
 
         <audio crossorigin autoplay id="audioplayer">
             <source src="" type="audio/mpeg" id="sourcesound">
         </audio>
     </div>
-  
-</nav> 
+    <div class="ml-auto next">
+        <label class="mx-auto">Playing Next:</label>
+        <marquee id="next-song" scrolldelay="500"></marquee>
+    </div>
+</div> 
 
-    <script src="../js/player.js"></script>
+   <script src="../js/player.js"></script>
 

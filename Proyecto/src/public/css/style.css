@@ -1,17 +1,19 @@
 .audio.green-audio-player {
-  width: 100%;
-  min-width: 300px;
-  height: 30px;
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.07);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 24px;
-  padding-right: 24px;
-  border-radius: 4px;
-  user-select: none;
-  -webkit-user-select: none;
-  background-color: #000;
+    width: 60%;
+    max-width: 60%;
+    min-width: 60%;
+    min-width: 300px;
+    height: 40px;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-radius: 4px;
+    user-select: none;
+    -webkit-user-select: none;
+    background-color: rgba(0,0,0,0);
 }
 .audio.green-audio-player .play-pause-btn {
   display: none;
@@ -84,17 +86,17 @@
   cursor: pointer;
 }
 .audio.green-audio-player .volume .volume-btn.open path {
-  fill: #44BFA3;
+  fill: #ad0;
 }
 .audio.green-audio-player .volume .volume-controls {
   width: 30px;
   height: 135px;
-  background-color: rgba(0, 0, 0, 0.62);
+  background-color: rgba(0, 0, 0, 1);
   border-radius: 7px;
   position: absolute;
   left: -3px;
   bottom: 52px;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   display: flex;
 }

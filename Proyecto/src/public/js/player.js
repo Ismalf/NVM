@@ -56,8 +56,9 @@ player.addEventListener('ended', function () {
 });
                                                    
 volumeBtn.addEventListener('click', function () {
-  volumeBtn.classList.toggle('open');
-  volumeControls.classList.toggle('hidden');
+    console.log('clicked volume');
+    volumeBtn.classList.toggle('open');
+    volumeControls.classList.toggle('hidden');
 });
 
 window.addEventListener('resize', directionAware);
@@ -199,15 +200,20 @@ var i = 0;
 
 function playalbum(album_id, artist_id){
     //get the album directory
+    
+    document.getElementById('playList').innerHTML = 'Playing: '+artist_id+'/'+album_id;
+    
     var dir = '/main/'+artist_id+'/'+album_id;
     //load albums songs
     loadFile(dir, setalbumplaylist);
+    
 }
 
 //----------- func -------------
 function setalbumplaylist(xhttp){
     //get the AJAX response
     console.log('request');
+    var playListBox = document.getElementById('playListMenu');
     console.log(xhttp.responseText);
     //asing it to the playlist
     var response = JSON.parse(xhttp.responseText);
@@ -217,9 +223,18 @@ function setalbumplaylist(xhttp){
         console.log(file);
     });*/
     playList = response;
+    var tmp = playList;
+    var newstringhtml = "";
+    for(var j = 0; j < tmp.length; j++){
+        console.log('print'+tmp[j].split('/')[4].split('.')[0]);
+        newstringhtml+= '<a href="#" class="nav-link">'+tmp[j].split('/')[4].split('.')[0]+'</a><hr>';
+    }
+    playListBox.innerHTML = newstringhtml;
     //play the song at 0
     console.log('source:');
-    document.getElementById("sourcesound").src= playList[0];  
+    document.getElementById("sourcesound").src= playList[0]; 
+    document.getElementById("now-Playing").innerHTML = playList[0].split('/')[4].split('.')[0];
+    document.getElementById("next-song").innerHTML = playList[1].split('/')[4].split('.')[0];
     player.pause();
     player.load();
     player.play();

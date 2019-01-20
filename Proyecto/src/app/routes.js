@@ -209,6 +209,19 @@ module.exports=(app,passport)=>{
         console.log(songs);
         res.send(songs);
     }); 
+    
+    app.get('/profile/:artist', async (req, res) => {
+        //leer toda la información necesaria de la base de datos
+        //obtener albums del artista
+        var content = fs.readdirSync('../src/public/media_files/'+req.params.artist);
+        //obtener todas las canciones del artista
+        var songs = [];
+        content.forEach(file=>{
+           songs.push('../media_files/'+req.params.artist+'/'+req.params.album+'/'+file);
+        });
+        console.log(songs);
+        res.render('profile',{content});
+    }); 
 
 };
 
