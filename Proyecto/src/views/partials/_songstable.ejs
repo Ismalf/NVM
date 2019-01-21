@@ -23,7 +23,8 @@
                     <td><%=topsongs[i].artist%></td>
                     <td><i class="material-icons" onclick="play_song('<%=topsongs[i].artist%>','<%=topsongs[i].album%>','<%=topsongs[i].title%>')">play_arrow</i></td>
                     <td><i class="material-icons"
-                    onclick="add_song('<%=topsongs[i].artist%>','<%=topsongs[i].album%>','<%=topsongs[i].title%>')">playlist_add</i></td>
+                    onclick="add_song('<%=topsongs[i].artist%>','<%=topsongs[i].album%>','<%=topsongs[i].title%>')"
+                           id="<%=topsongs[i].artist%>/<%=topsongs[i].album%>/<%=topsongs[i].title%>/add">playlist_add</i></td>
                 </tr>
             <%}%>
         </tbody>

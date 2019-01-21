@@ -270,6 +270,7 @@ function playsong(index){
 }
 
 function play_song(artist, album, song){
+    document.getElementById('playList').innerHTML = 'Playing: Custom Paylist';
     i=0;
     var dir = artist+'/'+album+'/'+song;
     console.log(dir);
@@ -293,6 +294,7 @@ function play_song(artist, album, song){
 
 function add_song(artist, album, song){
     var dir = artist+'/'+album+'/'+song;
+    document.getElementById(dir+'/add').style = "color: #ad0";
     var song = '../media_files/'+dir+'.mp3';
     console.log("New song:");
     console.log(song);
