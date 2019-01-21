@@ -6,12 +6,14 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>NME Main</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" href="../css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/custom.css">
         <link rel="stylesheet" href="../css/customscroll.css">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="icon" href="../assets/nm.ico">
+        <script src="../js/jquery.js"></script>
     </head>
     <body class="mainpg">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top topnav">
@@ -21,11 +23,11 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav mr-3">
                     <li class="nav-item active ">
                         <a class="nav-link" href="#">User <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mx-auto">
                         <%include partials/_dropplaylist%>
                     </li>
                     
@@ -36,55 +38,32 @@
         <div class="sidenav" id="mySidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> &times;</a>
             <a style="cursor: default">Recommended</a>
-            <a href="/main/popartists">Popular Artists</a>
-            <a href="/main/topsongs">Popular Songs</a>
-            <a href="/main/albums">Top Albums</a>
+            <a href=""  id="popartists" onclick="closeNav()">Popular Artists</a>
+            <a href="" id="popsongs" onclick="closeNav()">Popular Songs</a>
+            <a href=""  id="topalbums" onclick="closeNav()">Top Albums</a>
             <hr>
             <a style="cursor: default">Your Music</a>
-            <a href="#">Liked Songs</a>
-            <a href="#">Liked Albums</a>
-            <a href="#">Artists you follow</a>
+            <a href="#" onclick="closeNav()">Liked Songs</a>
+            <a href="#" onclick="closeNav()">Liked Albums</a>
+            <a href="#" onclick="closeNav()">Artists you follow</a>
             <hr>
             <a style="cursor: default">Your Profile</a>
             <a href="/profile">Profile</a>
             <a href="/mail">Send Email</a>
-            <a href="">Check your mail</a>
+            <a href="" onclick="closeNav()">Check your mail</a>
         </div>
 
         <div id="main" class="mainpg">
 
-            <div class="container">
-                <div class="row">
-                    <div class="col cc">
-                        <h2 class="fadeineff"><%= title%></h2>
-                    </div>
-                </div>
-                <!--Fill dynamically-->
-                <!--print 4 albums per row-->
-                <%if(topsongs==null){%>
-                <div class="albumcontainer" id="albumcontainer">
-                    <div class="row mt-3">
-                        <%if(topalbums!=null) {%>
-                                <%for(var i = 0; i < topalbums.length; i++){%>
-                                    <%include partials/_albumcard%>
-                                <%}%>  
-                        <%}%>
-                        <%if(artists!=null) {%>
-                                <%for(var i = 0; i < artists.length; i++){%>
-                                    <%include partials/_artistcard%>
-                                <%}%>
-                        <%}%>
-                        
-                    </div>
-                </div>
-                <%}else{%>
-                    <%include partials/_songstable%>
-                <%}%>
+            <div class="container" id="mainbody">
+                <%include partials/_mainbody%>
             </div>
         </div>
 
         
         <script src="../js/sidenav.js"></script>
+        <script src="../js/viewhandler.js"></script>
+        
     </body>
     <footer>
        <% include partials/_player %>

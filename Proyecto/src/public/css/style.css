@@ -1,9 +1,9 @@
 .audio.green-audio-player {
-    width: 60%;
-    max-width: 60%;
-    min-width: 60%;
-    min-width: 300px;
+    
+    max-width: 80%;
+    min-width: 80%;
     height: 40px;
+    max-height: 40px;
     box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.07);
     display: flex;
     justify-content: space-between;

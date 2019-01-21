@@ -19,17 +19,17 @@ module.exports=(app,passport)=>{
         res.render('index');
     });
 
-    app.get('/main', isLoggedIn, function(req, res){
+    /*app.get('/main', isLoggedIn, function(req, res){
         res.render('main', {
         user:req.user
         });
-    });
+    });*/
     app.get('/login', function(req, res){
         res.render('login', {message:req.flash('loginMessage')});
     });
 
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/main/albums',
+        successRedirect: '/main',
         failureRedirect: '/login',
         failureFlash: true
         }),
@@ -47,12 +47,12 @@ module.exports=(app,passport)=>{
     });
 
     app.post('/registro1', passport.authenticate('local-signup', {
-        successRedirect: '/main/albums',
+        successRedirect: '/main',
         failureRedirect: '/registro',
         failureFlash: true
     }));
     app.post('/registro2', passport.authenticate('local-signup1', {
-        successRedirect: '/main/albums',
+        successRedirect: '/main',
         failureRedirect: '/registro',
         failureFlash: true
     }));
@@ -124,7 +124,13 @@ module.exports=(app,passport)=>{
 
         res.render('profile');
     });
-
+    app.get('/main', async(req, res)=>{
+        var title = "Discover";
+        var topalbums = null;
+        var artists = null;
+        var topsongs = null;
+       res.render('main',{topalbums, title, artists, topsongs}); 
+    });
     app.get('/main/albums', async (req, res) => {
         console.log('reading File');
         var content = fs.readFileSync('../src/public/media_files/Top/TopAlbums.data','utf8');
@@ -148,7 +154,7 @@ module.exports=(app,passport)=>{
         var artists=null;
         var topsongs=null;
         var title='Top Albums';
-        res.render('main',{topalbums, title, artists, topsongs});
+        res.render('partials/_mainbody',{topalbums, title, artists, topsongs});
     });
 
     app.get('/main/popartists', async (req, res) => {
@@ -171,7 +177,7 @@ module.exports=(app,passport)=>{
         var topalbums = null;
         var topsongs=null;
         var title='Top Artists';
-        res.render('main',{topalbums, title, artists, topsongs});
+        res.render('partials/_mainbody.ejs',{topalbums, title, artists, topsongs});
     });
 
     app.get('/main/topsongs', async (req, res) => {
@@ -196,7 +202,7 @@ module.exports=(app,passport)=>{
         var topalbums = null;
         var artists=null;
         var title='Top Songs';
-        res.render('main',{topalbums, title, artists, topsongs});
+        res.render('partials/_mainbody',{topalbums, title, artists, topsongs});
     }); 
 
     //------------------- Get Album Playlist ------------------------------------------

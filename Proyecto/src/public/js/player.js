@@ -44,15 +44,18 @@ player.addEventListener('canplay', makePlay);
 player.addEventListener('ended', function () {
     playPause.attributes.d.value = "M18 12L0 24V0";
     player.currentTime = 0;
+    document.getElementById(i).style = "color: #6c757d;";
      //If it reaches limit of playlist set counter to 0
-    if(i==playList.length) i = 0;
+    if(i>=playList.length) i = 0;
     //else increment playlist element by 1
     else i++;
     console.log('another song:');
-    document.getElementById("sourcesound").src= playList[i];  
+    document.getElementById("sourcesound").src= playList[i];
+    document.getElementById("now-Playing").innerHTML = playList[i].split('/')[4].split('.')[0];
     player.pause();
     player.load();
     player.play();
+    document.getElementById(i).style = "color: #ad0;";
 });
                                                    
 volumeBtn.addEventListener('click', function () {
@@ -227,18 +230,17 @@ function setalbumplaylist(xhttp){
     var newstringhtml = "";
     for(var j = 0; j < tmp.length; j++){
         console.log('print'+tmp[j].split('/')[4].split('.')[0]);
-        newstringhtml+= '<a href="#" class="nav-link">'+tmp[j].split('/')[4].split('.')[0]+'</a><hr>';
+        newstringhtml+= '<a href="#" class="nav-link " onclick="playsong('+j+')" id="'+j+'">'+tmp[j].split('/')[4].split('.')[0]+'</a><hr>';
     }
     playListBox.innerHTML = newstringhtml;
     //play the song at 0
     console.log('source:');
     document.getElementById("sourcesound").src= playList[0]; 
     document.getElementById("now-Playing").innerHTML = playList[0].split('/')[4].split('.')[0];
-    document.getElementById("next-song").innerHTML = playList[1].split('/')[4].split('.')[0];
     player.pause();
     player.load();
     player.play();
-    
+    document.getElementById(i).style = "color: #ad0;";
 }
 
 //------------------------------------------------- AJAX --------------------------------------
@@ -255,8 +257,53 @@ function loadFile(filePath, func) {
     xhttp.send();
 }
 
+function playsong(index){
+    document.getElementById(i).style = "color: #6c757d;";
+    i = index;
+    document.getElementById("sourcesound").src= playList[index]; 
+    document.getElementById("now-Playing").innerHTML = playList[index].split('/')[4].split('.')[0];
+    player.pause();
+    player.load();
+    player.play();
+    document.getElementById(i).style = "color: #ad0;";
+    
+}
 
+function play_song(artist, album, song){
+    i=0;
+    var dir = artist+'/'+album+'/'+song;
+    console.log(dir);
+    playList = [];
+    var song = '../media_files/'+dir+'.mp3';
+    playList.push(song);
+    var tmp = playList;
+    var playListBox = document.getElementById('playListMenu');
+    var newstringhtml;
+    for(var j = 0; j <playList.length; j++)
+        newstringhtml+= '<a href="#" class="nav-link " onclick="playsong('+j+')" id="'+j+'">'+tmp[j].split('/')[4].split('.')[0]+'</a><hr>';
+    playListBox.innerHTML=newstringhtml;
+    document.getElementById("sourcesound").src= playList[i]; 
+    document.getElementById("now-Playing").innerHTML = playList[i].split('/')[4].split('.')[0];
+    player.pause();
+    player.load();
+    player.play();
+    document.getElementById(i).style = "color: #ad0;";
+    
+}
 
+function add_song(artist, album, song){
+    var dir = artist+'/'+album+'/'+song;
+    var song = '../media_files/'+dir+'.mp3';
+    console.log("New song:");
+    console.log(song);
+    playList.push(song);
+    var tmp = playList;
+    var playListBox = document.getElementById('playListMenu');
+    var newstringhtml;
+    for(var j = 0; j <playList.length; j++)
+        newstringhtml+= '<a href="#" class="nav-link " onclick="playsong('+j+')" id="'+j+'">'+tmp[j].split('/')[4].split('.')[0]+'</a><hr>';
+    playListBox.innerHTML=newstringhtml;
+}
 
 
 

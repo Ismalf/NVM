@@ -10,6 +10,8 @@
                 <th>Title</th>
                 <th>Album</th>
                 <th>Artist</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody id="songlist">
@@ -19,6 +21,9 @@
                     <td><%=topsongs[i].title%></td>
                     <td><%=topsongs[i].album%></td>
                     <td><%=topsongs[i].artist%></td>
+                    <td><i class="material-icons" onclick="play_song('<%=topsongs[i].artist%>','<%=topsongs[i].album%>','<%=topsongs[i].title%>')">play_arrow</i></td>
+                    <td><i class="material-icons"
+                    onclick="add_song('<%=topsongs[i].artist%>','<%=topsongs[i].album%>','<%=topsongs[i].title%>')">playlist_add</i></td>
                 </tr>
             <%}%>
         </tbody>
