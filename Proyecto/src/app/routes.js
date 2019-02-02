@@ -51,6 +51,7 @@ module.exports=(app,passport)=>{
         failureRedirect: '/registro',
         failureFlash: true
     }));
+
     app.post('/registro2', passport.authenticate('local-signup1', {
         successRedirect: '/main',
         failureRedirect: '/registro',
@@ -86,11 +87,12 @@ module.exports=(app,passport)=>{
             }
         });
     });
+
     app.post('/upload_media', upload.any(), function (req, res)  {
-    
+
 //------------------------------------------------ Artist's Music -------------------------------------------------
     // Music files are saved in directories.
-    // Each song is saved according to it´s parent directorioes 
+    // Each song is saved according to it´s parent directorioes
     // Media Files -> 'Artist' -> 'Album' -> 'Song'
     // Default album: Single
     //-------------------------------------------------------------------------------------------------------------
@@ -105,7 +107,7 @@ module.exports=(app,passport)=>{
                     //console.log('succes ;)');
                 }
             });
-        } 
+        }
 
         req.files.forEach((file)=>{
             fs.rename('../src/public/media_files/tmp/'+file.originalname,artist_album_song+'/'+file.originalname, function(err){
@@ -114,23 +116,21 @@ module.exports=(app,passport)=>{
                 }else{
                     //console.log('success');
                 }
-            });    
+            });
         });
         res.redirect('profile');
 
-    }); 
-    app.get('/profile', async (req, res) => {
-        //var files;
-
-        res.render('profile');
     });
-    app.get('/main', async(req, res)=>{
+
+    app.get('/main', isLoggedIn, async(req, res)=>{
         var title = "Discover";
+        var user = req.user;
         var topalbums = null;
         var artists = null;
         var topsongs = null;
-       res.render('main',{topalbums, title, artists, topsongs}); 
+       res.render('main',{topalbums, title, artists, topsongs, user});
     });
+
     app.get('/main/albums', async (req, res) => {
         console.log('reading File');
         var content = fs.readFileSync('../src/public/media_files/Top/TopAlbums.data','utf8');
@@ -203,7 +203,7 @@ module.exports=(app,passport)=>{
         var artists=null;
         var title='Top Songs';
         res.render('partials/_mainbody',{topalbums, title, artists, topsongs});
-    }); 
+    });
 
     //------------------- Get Album Playlist ------------------------------------------
     app.get('/main/:artist/:album', async (req, res) => {
@@ -214,12 +214,14 @@ module.exports=(app,passport)=>{
         });
         console.log(songs);
         res.send(songs);
-    }); 
-    
+    });
+/*
+  function get profile
+*/
     app.get('/profile/:artist', async (req, res) => {
         //leer toda la información necesaria de la base de datos
         artinfo = {
-            usrname:"",
+            usrname:req.params.artist,
             followers:"",
             songs:"",
             albums:"",
@@ -232,16 +234,16 @@ module.exports=(app,passport)=>{
         albums.forEach(album=>{
             var tmp = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+album);
             tmp.forEach(song => {
-                songs.push(song.split('.')[0]);    
+                songs.push(song.split('.')[0]);
             });
-            
+
         });
         artinfo.usrname = req.params.artist;
         artinfo.songs = songs.length;
-        artinfo.albumss = albums.length;
+        artinfo.albums = albums.length;
         console.log(songs);
-        res.render('profile',{albums, songs, artinfo});
-    }); 
+        res.render('partials/_profile',{albums, songs, artinfo});
+    });
 
 };
 
@@ -251,7 +253,3 @@ function isLoggedIn(req, res, next){
 
  res.redirect('/');
 }
-
-
-
-                                        

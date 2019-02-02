@@ -22,13 +22,13 @@ module.exports = function(passport) {
  passport.use(
   'local-signup',
   new LocalStrategy({
-   usernameField : 'username',
-  passwordField: 'password',
-  nombreField:'nombre',
-  apellidoField:'apellido',
-  correoField:'correo',
-  telefonoField: 'telefono',
-  passReqToCallback: true
+    usernameField : 'username',
+    passwordField: 'password',
+    nombreField:'nombre',
+    apellidoField:'apellido',
+    correoField:'correo',
+    telefonoField: 'telefono',
+    passReqToCallback: true
  },
  function(req, username, password, done){
   connection.query("SELECT * FROM users WHERE username = ? ",

@@ -1,0 +1,109 @@
+<!--Check user permisions to edit profile-->
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-info">Edit</button>
+            <button type="button" class="btn btn-success">Save</button>
+            <button type="button" class="btn" id="uploadbtn">Upload</button>
+            <%include partials/_uploads %>
+
+        </div>
+    </div>
+</div>
+
+<!--User basic info-->
+<div class="container mt-6">
+    <div class="row mt-5">
+        <!--Info-->
+        <div class="col-md-4">
+            <div class="card artistcard">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 cc">
+                            <img src="../assets/user.png">
+                            <br>
+                            <label id="user_name">username</label>
+                        </div>
+                        <div class="col-6">
+                            <label id="user_followers"># Followers</label>
+                            <hr>
+                            <label id="user_songs"># Songs</label>
+                            <hr>
+                            <label id="user_albums"># Albums</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--About-->
+        <div class="col-md-5 d-flex align-self-stretch">
+            <div class="card ">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <label><h3>About me</h3></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--Max number of chars 201-->
+                        <div class="col">
+                        <p id="user_description" class="justify-content">
+                            carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem  diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem caprdie.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Contact-->
+        <div class="col-md-3 d-flex align-self-center flex-column">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <label><h4>Contact</h4></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a id="user_contact" href="">FB</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a id="user_contact" href="">Gmail</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a id="user_contact" href="">Twitter</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a id="user_contact" href="">Instagram</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--User's albums-->
+<div class="container mt-5">
+    <div class="row fixed">
+        <div class="col cc">
+            <h2>Albums</h2>
+        </div>
+    </div>
+    <!--Fill dynamically-->
+    <!--print 4 albums per row-->
+    <div class="albumcontainer" id="albumcontainer">
+        <div class="row cc mt-3">
+            <%include _profilealbumcard%>
+        </div>
+    </div>
+</div>
+
+<!--User's songs-->
+<%include _profilesongstable%>
