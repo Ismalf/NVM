@@ -9,30 +9,42 @@
         <% if(message.length > 0) { %>
           <div class="alert alert-danger"><%= message %></div>
           <% } %>
-        <form action="/registro1" method="post">
-          <input type="text" placeholder="Nombres" name="nombre" class="form-control" required>
-          <input type="text" placeholder="Apellidos" name="apellido" class="form-control" required>
-          <input type="text" placeholder="Usuario" name="username" class="form-control" required>
-          <input type="password" placeholder="Contraseña" name="password" class="form-control" required>
-          <input type="text" placeholder="Correo Electrónico" name="correo" class="form-control" required>
-          <input type="text" placeholder="Teléfono" name="telefono" class="form-control" required>
-          <input type="submit" class="btn btn-succcess btn-lg" value="Registrar Usuario">
+        <!-- Form to register a normal User or Artist -->
+        <form action="/registro1" method="post" id="userdata">
+          <input type="text" placeholder="Name" name="name" class="form-control" required>
+          <input type="text" placeholder="Last Name" name="lastname" class="form-control" required>
+          <input type="text" placeholder="Email" name="email" class="form-control" required>
+          <hr>
+          <input type="text" placeholder="User Name" name="username" class="form-control" required>
+          <input type="password" placeholder="Password" name="password" class="form-control" required>
+          <select form="userdata" name="type">
+              <option selected>Artist</option>
+              <option>Simple</option>
+          </select>
+          <hr>
+          <input type="submit" class="btn btn-succcess btn-lg" value="Register User">
         </form>
       </div>
 
-
+      <!-- Form to register a Record Label -->
       <div class="formulario">
         <center><div class="col-12 user-img">
             <img src="../assets/empresa.png" th:src="@{/user.png}"/>
         </div></center>
         <center><h2>Registrar Empresa</h2></center>
-        <form action="/registro2" method="post">
-          <input type="text" placeholder="Nombres" name="nombreE" class="form-control" required>
-          <input type="text" placeholder="Usuario" name="usernameE" class="form-control" required>
-          <input type="password" placeholder="Contraseña" name="passwordE" class="form-control" required>
-          <input type="text" placeholder="Correo Electrónico" name="correoE" class="form-control" required>
-          <input type="text" placeholder="Teléfono" name="telefonoE" class="form-control" required>
-          <input type="submit" class="btn btn-succcess btn-lg" value="Registrar Usuario">
+        <form action="/registro2" method="post" id="rldata">
+          <input type="text" placeholder="Record Label" name="name_rl" class="form-control" required>
+          <input type="text" placeholder="Direction" name="dir_rl" class="form-control" required>
+          <input type="text" placeholder="Country" name="country_rl" class="form-control" required>
+          <input type="text" placeholder="Phone Number" name="tel_rl" class="form-control" required>
+          <input type="text" placeholder="Email" name="email_rl" class="form-control" required>
+          <hr>
+          <input type="text" placeholder="Record Label ALIAS" name="username_rl" class="form-control" required>
+          <input type="password" placeholder="Password" name="password_rl" class="form-control" required>
+          <select form="rldata" name="type">
+              <option selected>Business</option>
+          </select>
+          <input type="submit" class="btn btn-succcess btn-lg" value="Register Record Label">
         </form>
       </div>
       <div class="toggle">
@@ -43,4 +55,5 @@
 
     <script src="../js/jquery.js"></script>
     <script src="../js/main.js"></script>
-<% include partials/_footerR %>
+  </body>
+</html>

@@ -1,51 +1,57 @@
 var nodemailer = require('nodemailer');
-const express=require('express');
-//para subir archivos
+const express = require('express');
+
 var formidable = require('formidable');
+
+//multer module used for uploadings
 var multer = require('multer');
+//stablish where are the new files going to be stored
 var storage = multer.diskStorage({
     destination: function(req, file,cb){
+        //temporary directory for media files
         cb(null,'../src/public/media_files/tmp')
     },
+    //maintain the original name
     filename: function(req, file, cb){
         cb(null, file.originalname);
     }
 });
 var upload = multer({storage:storage});
+
+//module required to read the file system
 var fs=require('fs');
 
 module.exports=(app,passport)=>{
+    /*Function used to get the index*/
     app.get('/',(req,res)=>{
         res.render('index');
     });
 
-    /*app.get('/main', isLoggedIn, function(req, res){
-        res.render('main', {
-        user:req.user
-        });
-    });*/
+    /*function used to get the login page*/
     app.get('/login', function(req, res){
         res.render('login', {message:req.flash('loginMessage')});
     });
 
+    /*function used to check credentials*/
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/main',
         failureRedirect: '/login',
         failureFlash: true
-        }),
-        function(req, res){
+        }), function(req, res){
         if(req.body.remember){
-        req.session.cookie.maxAge = 1000 * 60 * 3;
+          req.session.cookie.maxAge = 1000 * 60 * 3;
         }else{
-        req.session.cookie.expires = false;
+          req.session.cookie.expires = false;
         }
         res.redirect('/login');
     });
 
+    /*function used to get the register page*/
     app.get('/registro', function(req, res){
         res.render('registro', {message: req.flash('signupMessage')});
     });
 
+    /*function used to register a new user*/
     app.post('/registro1', passport.authenticate('local-signup', {
         successRedirect: '/main',
         failureRedirect: '/registro',
@@ -122,8 +128,10 @@ module.exports=(app,passport)=>{
 
     });
 
-    app.get('/main', isLoggedIn, async(req, res)=>{
+    app.get('/main', async(req, res)=>{
         var title = "Discover";
+
+        console.log(req.user.USERNAME);
         var user = req.user;
         var topalbums = null;
         var artists = null;
@@ -131,6 +139,7 @@ module.exports=(app,passport)=>{
        res.render('main',{topalbums, title, artists, topsongs, user});
     });
 
+    /*Get request to load the top albums in the site*/
     app.get('/main/albums', async (req, res) => {
         console.log('reading File');
         var content = fs.readFileSync('../src/public/media_files/Top/TopAlbums.data','utf8');
@@ -157,6 +166,7 @@ module.exports=(app,passport)=>{
         res.render('partials/_mainbody',{topalbums, title, artists, topsongs});
     });
 
+    /*Get request to load the top artists in the site*/
     app.get('/main/popartists', async (req, res) => {
         var content = fs.readFileSync('../src/public/media_files/Top/TopArtists.data','utf8');
         console.log(content);
@@ -180,6 +190,7 @@ module.exports=(app,passport)=>{
         res.render('partials/_mainbody.ejs',{topalbums, title, artists, topsongs});
     });
 
+    /*Get request to load the top songs in the site*/
     app.get('/main/topsongs', async (req, res) => {
         var content = fs.readFileSync('../src/public/media_files/Top/TopSongs.data','utf8');
         console.log(content);
@@ -205,7 +216,7 @@ module.exports=(app,passport)=>{
         res.render('partials/_mainbody',{topalbums, title, artists, topsongs});
     });
 
-    //------------------- Get Album Playlist ------------------------------------------
+    /*Get request to load an album as a playlist*/
     app.get('/main/:artist/:album', async (req, res) => {
         var content = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+req.params.album);
         var songs = [];
@@ -215,41 +226,54 @@ module.exports=(app,passport)=>{
         console.log(songs);
         res.send(songs);
     });
-/*
-  function get profile
-*/
+
+    /*Get an users profile */
     app.get('/profile/:artist', async (req, res) => {
-        //leer toda la información necesaria de la base de datos
+        /*read all data from db*/
+        var artist = '../src/public/media_files/'+req.user.USERNAME;
+        if(!fs.existsSync(artist)){
+          fs.mkdir(artist, {recursive:true}, function(err){
+              if(err){
+                  console.log(err);
+              }else{
+                  //console.log('succes ;)');
+              }
+          });
+        }
         artinfo = {
-            usrname:req.params.artist,
+            usrname: req.params.artist,
             followers:"",
             songs:"",
             albums:"",
             about:""
         }
-        //obtener albums del artista
-        var albums = fs.readdirSync('../src/public/media_files/'+req.params.artist);
-        //obtener todas las canciones del artista
-        var songs = [];
-        albums.forEach(album=>{
-            var tmp = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+album);
-            tmp.forEach(song => {
-                songs.push(song.split('.')[0]);
-            });
 
-        });
-        artinfo.usrname = req.params.artist;
-        artinfo.songs = songs.length;
-        artinfo.albums = albums.length;
-        console.log(songs);
-        res.render('partials/_profile',{albums, songs, artinfo});
+          //obtener albums del artista
+          var albums = fs.readdirSync('../src/public/media_files/'+req.params.artist);
+          //obtener todas las canciones del artista
+          var songs = [];
+          albums.forEach(album=>{
+              var tmp = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+album);
+              tmp.forEach(song => {
+                  songs.push(song.split('.')[0]);
+              });
+
+          });
+          artinfo.usrname = req.params.artist;
+          artinfo.songs = songs.length;
+          artinfo.albums = albums.length;
+          console.log(songs);
+          res.render('partials/_profile',{albums, songs, artinfo});
+        
+
     });
 
 };
 
 function isLoggedIn(req, res, next){
- if(req.isAuthenticated())
-  return next();
 
- res.redirect('/');
+  if(req.isAuthenticated())
+    return next();
+  alert("Please Log In");
+  res.redirect('/');
 }
