@@ -2,11 +2,12 @@
 <div class="container">
     <div class="row">
         <div class="col">
+          <%if(editable){%>
             <button type="button" class="btn btn-info">Edit</button>
             <button type="button" class="btn btn-success">Save</button>
             <button type="button" class="btn" id="uploadbtn">Upload</button>
             <%include _uploads %>
-
+          <%}%>
         </div>
     </div>
 </div>
@@ -20,16 +21,16 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6 cc">
-                            <img src="../assets/user.png">
+                            <img src="<%= profile.imgdir%>">
                             <br>
-                            <label id="user_name">username</label>
+                            <label id="user_name"><%= user.USERNAME%></label>
                         </div>
                         <div class="col-6">
-                            <label id="user_followers"># Followers</label>
+                            <label id="user_followers"><%= profile.followers%> Followers</label>
                             <hr>
-                            <label id="user_songs"># Songs</label>
+                            <label id="user_songs"><%= numofsongs%> Songs</label>
                             <hr>
-                            <label id="user_albums"># Albums</label>
+                            <label id="user_albums"><%= numofalbums%> Albums</label>
                         </div>
                     </div>
                 </div>
@@ -47,8 +48,7 @@
                     <div class="row">
                         <!--Max number of chars 201-->
                         <div class="col">
-                        <p id="user_description" class="justify-content">
-                            carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem  diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem caprdie.</p>
+                        <p id="user_description" class="justify-content"><%= profile.about %></p>
                         </div>
                     </div>
                 </div>
@@ -65,22 +65,22 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <a id="user_contact" href="">FB</a>
+                            <a id="user_contact" href="<%= profile.fblink%>">FB</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <a id="user_contact" href="">Gmail</a>
+                            <a id="user_contact" href="<%= profile.olink%>">Other</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <a id="user_contact" href="">Twitter</a>
+                            <a id="user_contact" href="<%= profile.twlink%>">Twitter</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <a id="user_contact" href="">Instagram</a>
+                            <a id="user_contact" href="<%= profile.iglink%>">Instagram</a>
                         </div>
                     </div>
                 </div>

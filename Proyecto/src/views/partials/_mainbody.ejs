@@ -8,10 +8,11 @@
 <%if(topsongs==null){%>
 <div class="albumcontainer" id="albumcontainer">
     <div class="row mt-3">
+      <!--Loops to fill the page with the required ajax data-->
         <%if(topalbums!=null) {%>
                 <%for(var i = 0; i < topalbums.length; i++){%>
                     <%include _albumcard%>
-                <%}%>  
+                <%}%>
         <%}%>
         <%if(artists!=null) {%>
                 <%for(var i = 0; i < artists.length; i++){%>
