@@ -123,7 +123,7 @@ module.exports=(app,passport)=>{
 // Media Files -> 'Artist' -> 'Album' -> 'Song'
 // Default album: Single
 //-----------------------------------------------------------------------------------------------------------------
-        var artist_album_song = '../src/public/media_files/'+req.body.artist+'/'+req.body.album;
+        var artist_album_song = '../src/public/media_files/'+req.user.USERNAME+'/'+req.body.album;
         if(!fs.existsSync(artist_album_song)){
             //console.log('creating directory');
             fs.mkdir(artist_album_song, {recursive:true}, function(err){
@@ -135,7 +135,12 @@ module.exports=(app,passport)=>{
                           if(err){
                               console.log(err);
                           }else{
-                              //console.log('success');
+                             var songdir= '../media_files/'+req.user.USERNAME+'/'+req.body.album+'/'+file.originalname;
+                              connection.query("INSERT INTO song (id_account, username, id_alb, title, lenght, year, dir_song, dir_songImg)"+
+                              "VALUES ("+req.user.ID_ACCOUNT+",'"+req.user.USERNAME+"',(SELECT id_alb FROM album WHERE title = '"
+                              +req.body.album+"'),'3:00','"+req.body.year+"','"+songdir+"','"+songdir+"')", function(err, results){
+                                if(err) console.log(err);
+                              });
                           }
                       });
                   });
@@ -293,7 +298,7 @@ module.exports=(app,passport)=>{
             console.log('loading profile of');
             console.log(username);
             var numofsongs = songs.length;
-            var numofalbums = albums.length;
+            var numofalbums = albums.length - 1;
             res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albumsd});
         }).catch(function(p){
           console.log(p);
@@ -437,7 +442,7 @@ module.exports=(app,passport)=>{
                   //console.log('success');
                   dirimg = '../media_files/'+req.user.USERNAME+'/'+req.body.albumtitle;
                   connection.query("INSERT INTO album (id_account, username, title_alb, year_alb, dir_alb, dir_albImg)"+
-                  "VALUES ('"+req.user.ID_ACCOUNT+"','"+req.user.USERNAME+"','"+req.body.albumtitle+"','"+req.body.year+"','"+
+                  "VALUES ("+req.user.ID_ACCOUNT+",'"+req.user.USERNAME+"','"+req.body.albumtitle+"',"+req.body.year+",'"+
                   dir+"','"+dirimg+"'/img.jpeg')",function(err, results){
                     if(err) console.log(err);
                   });
@@ -445,7 +450,18 @@ module.exports=(app,passport)=>{
           });
         }
       });
-      req.redirect('/main/myprofile');
+      var albums = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME);
+      var albumsd=[];
+      var albums2 = {};
+      albums.forEach(album=>{
+        //read the names on each album and save them on an array.
+        if(album!='img.jpeg'){
+          albums2.album = album;
+          albums2.artist = username;
+          albumsd.push(albums2);
+        }
+      });
+      req.render('/partials/_uploads',{albumsd});
     });
 };
 

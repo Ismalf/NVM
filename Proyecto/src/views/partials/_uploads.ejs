@@ -12,8 +12,8 @@
             <div class="modal-body mx-3">
                 <form action="/upload_media" method="post" enctype="multipart/form-data" id="dataform">
                     <input type="text" placeholder="Song Title" name="songtitle" class="form-control" >
-                    <input type="text" placeholder="Artist" name="artist" class="form-control" >
-                    <select form="dataform" name="album">
+                    <input type="text" placeholder="Year of release" name="year" class="form-control" >
+                    <select form="dataform" name="album" id="albumoptions">
                         <option selected>Single</option>
                         <%for(var i = 0; i < albumsd.length; i++){%>
                           <option><%=albumsd[i].album%></option>

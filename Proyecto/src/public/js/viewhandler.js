@@ -57,16 +57,24 @@ $("#myprofile").on('click', function(event){
     });
 });
 
-$("#createalbum").on('click', function(event){
+$("from#dataform").submit(function(event){
     console.log('hey');
     event.preventDefault();
     event.stopPropagation();
+    var formData = new FormData(this);
     $.ajax({
-        url: '/main/popartists',
-        type: 'GET'
+        url: '/create_album',
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            alert(data)
+        },
+        cache: false,
+        contentType: false,
+        processData: false
     }).done(function(result){
 
-        replace(result);
+        replacesimple(result);
     }).fail(function(err){
         console.log(err);
     });
@@ -75,4 +83,9 @@ $("#createalbum").on('click', function(event){
 function replace(xhttp){
     var div = document.getElementById("mainbody");
     div.innerHTML = xhttp;
+}
+
+function replacesimple(xhttp){
+  var div = document.getElementById("albumoptions");
+  div.innerHTML = xhttp;
 }
