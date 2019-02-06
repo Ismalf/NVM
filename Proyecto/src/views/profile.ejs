@@ -11,34 +11,28 @@
         <!--Top navigation bar-->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <img class="navbar-brand" src="../assets/nm.png">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/main/albums">Discover <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
-        </div>
         </nav>
-
         <div role="main" class="container maincontainer">
-
+          <div class="card">
+            <div class="card-body">
+              <h4>Welcome <%=username%>! Final Steps to complete your profile</h4>
+              <form action="/fillprofile" method="post" id="userdata" enctype="multipart/form-data">
+                <input type="text" placeholder="Instagram Account Link" name="ig" class="form-control">
+                <input type="text" placeholder="Facebook Account Link" name="fb" class="form-control">
+                <input type="text" placeholder="Twitter Account Link" name="tw" class="form-control">
+                <input type="text" placeholder="Others" name="other" class="form-control">
+                <hr>
+                <textarea type="text" placeholder="About you:" name="about" class="form-control" rows="5" required></textarea>
+                <hr>
+                <input placeholder="Upload a photo of you" type="file" name="avatar"/>
+                <hr>
+                <input type="submit" class="btn btn-succcess btn-lg" value="Fill my profile!">
+              </form>
+            </div>
+          </div>
         </div>
-
         <!--Scripts-->
     </body>
     <footer>
-
-        <!--Scripts for the Music player-->
-        <!--Music player-->
-
     </footer>
 </html>

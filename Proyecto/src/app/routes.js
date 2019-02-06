@@ -22,11 +22,24 @@ var upload = multer({storage:storage});
 var fs=require('fs');
 
 //Modules to make DB data retrieval
-var dbconfig = require('./database');
+var mysql = require('mysql');
+var dbconfig = require('../config/database');
 var connection = mysql.createConnection(dbconfig.connection);
 
 connection.query('USE ' + dbconfig.database);
 
+let profile = {
+  about: "",
+  links: {
+    iglink: "",
+    fblink: "",
+    twlink: "",
+    olink: ""
+  },
+  imgdir: "",
+  followers: ""
+};
+let username;
 module.exports=(app,passport)=>{
     /*Function used to get the index*/
     app.get('/',(req,res)=>{
@@ -59,21 +72,10 @@ module.exports=(app,passport)=>{
 
     /*function used to register a new user*/
     app.post('/registro1', passport.authenticate('local-signup', {
-        successRedirect: '/main',
+        successRedirect: '/profile',
         failureRedirect: '/registro',
         failureFlash: true
-    }), function(req, res){
-      //when a new user registers, a directory is created for his profile image (or songs if necesary)
-      if(!fs.existsSync('../src/public/media_files/'+req.body.username)){
-        fs.mkdir('../src/public/media_files/'+req.body.username, {recursive:true}, function(err){
-            if(err){
-                console.log(err);
-            }else{
-              console.log('created: '+'../src/public/media_files/'+req.body.username);
-            }
-        });
-      }
-    });
+    }));
 
     app.post('/registro2', passport.authenticate('local-signup1', {
         successRedirect: '/main',
@@ -114,11 +116,11 @@ module.exports=(app,passport)=>{
     app.post('/upload_media', upload.any(), function (req, res)  {
 
 //------------------------------------------------ Artist's Music -------------------------------------------------
-    // Music files are saved in directories.
-    // Each song is saved according to it´s parent directorioes
-    // Media Files -> 'Artist' -> 'Album' -> 'Song'
-    // Default album: Single
-    //-------------------------------------------------------------------------------------------------------------
+// Music files are saved in directories.
+// Each song is saved according to it´s parent directorioes
+// Media Files -> 'Artist' -> 'Album' -> 'Song'
+// Default album: Single
+//-----------------------------------------------------------------------------------------------------------------
         var artist_album_song = '../src/public/media_files/'+req.body.artist+'/'+req.body.album;
 
         if(!fs.existsSync(artist_album_song)){
@@ -127,27 +129,26 @@ module.exports=(app,passport)=>{
                 if(err){
                     console.log(err);
                 }else{
-                    //console.log('succes ;)');
+                  req.files.forEach((file)=>{
+                      fs.rename('../src/public/media_files/tmp/'+file.originalname, artist_album_song+'/'+file.originalname, function(err){
+                          if(err){
+                              console.log(err);
+                          }else{
+                              //console.log('success');
+                          }
+                      });
+                  });
                 }
             });
         }
 
-        req.files.forEach((file)=>{
-            fs.rename('../src/public/media_files/tmp/'+file.originalname, artist_album_song+'/'+file.originalname, function(err){
-                if(err){
-                    console.log(err);
-                }else{
-                    //console.log('success');
-                }
-            });
-        });
+
         res.redirect('profile');
 
     });
 
     app.get('/main', async(req, res)=>{
         var title = "Discover";
-
         console.log(req.user.USERNAME);
         var user = req.user;
         var topalbums = null;
@@ -247,20 +248,22 @@ module.exports=(app,passport)=>{
     app.get('/main/myprofile', async(req, res)=>{
       //To get the correct profile, first we need to know what account type it is
       if(req.user.TYPE_ACCOUNT == 'Artist'){
+        console.log('acceding my profile');
         //If it's an artist account, we proceed to get the albums
         /*
-        Author: ismalfmp
-        Albums is an array of directories names.
-        ------ objective of this function --------
-        Read all the names of the artist's albums.
+          Author: ismalfmp
+          Albums is an array of directories names.
+          ------ objective of this function --------
+          Read all the names of the artist's albums.
         */
+        console.log(req.user.USERNAME);
         var albums = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME);
         var songs = [];
         /*
-        Author: ismalfmp
-        Songs is an array of songs names.
-        ---------------- objetive of this function -----------------
-        Read all the songs contained on each Album (from var Albums)
+          Author: ismalfmp
+          Songs is an array of songs names.
+          ---------------- objetive of this function -----------------
+          Read all the songs contained on each Album (from var Albums)
         */
         albums.forEach(album=>{
           //read the names on each album and save them on an array.
@@ -271,12 +274,19 @@ module.exports=(app,passport)=>{
           });
         });
         var editable = true;
-        var user = req.user;
+        var username = req.user.USERNAME;
+        console.log('loading profile of');
+        console.log(username);
         var numofsongs = songs.length;
         var numofalbums = albums.length;
         //Check getprofileinfo function documentation
-        var profile = getprofileinfo(req.user.USERNAME);
-        res.render('partials/_profile',{user, editable, profile, numofsongs, numofalbums, songs, albums});
+        console.log('retrieving data');
+        getinfo(req.user.USERNAME).then(function(){
+            res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albums});
+        }).catch(function(p){
+          console.log(p);
+        });
+
       }
       if(req.user.TYPE_ACCOUNT == 'Simple'){
         //render simple user profile
@@ -286,6 +296,45 @@ module.exports=(app,passport)=>{
       }
     });
 
+    app.post('/fillprofile', upload.single('avatar'), function(req,res){
+      var dir = '../src/public/media_files/'+req.user.USERNAME;
+      console.log(dir);
+      if(!fs.existsSync(dir)){
+        fs.mkdir(dir, {recursive:true}, function(err){
+            if(err){
+                console.log(err);
+            }else{
+              console.log('created: '+'../src/public/media_files/'+req.body.username);
+            }
+        });
+      }
+      console.log(req.file.filename);
+      fs.rename('../src/public/media_files/tmp/'+req.file.originalname, dir+'/img.jpeg', function(err){
+          if(err){
+              console.log(err);
+          }else{
+              //console.log('success');
+          }
+      });
+      var imgdir = dir+'/img.jpeg';
+      var query = "INSERT INTO profile (id_account, username, IG_profile_link, FB_profile_link, TW_profile_link, Other_link, desc_profile, dir_profile_img)"+
+       "VALUES ((SELECT id_account FROM account WHERE username = '"+req.user.USERNAME+"'), '"+req.user.USERNAME+"','"+req.body.ig+"','"+req.body.fb+"','"
+      +req.body.tw+"','"+req.body.other+"','"+req.body.about+"','"+imgdir+"');"
+      connection.query(query, function(err, result){
+        if(err){
+          console.log(err);
+
+          res.redirect('/profile');
+        }
+      });
+      res.redirect('/main');
+
+    });
+
+    app.get('/profile', async(req,res)=>{
+      var username = req.user.USERNAME;
+      res.render('profile', {username});
+    });
     /*Get an users profile */
     app.get('/profile/:artist', async (req, res) => {
         /*read all data from db*/
@@ -322,46 +371,46 @@ module.exports=(app,passport)=>{
         var editable = false;
         console.log(songs);
         res.render('partials/_profile',{albums, songs, usrinfo, editable, profile});
-
-
     });
-
 };
 
 function isLoggedIn(req, res, next){
-
   if(req.isAuthenticated())
     return next();
-  alert("Please Log In");
+  
   res.redirect('/');
 }
 
+function getinfo(){
+  return new Promise(getprofileinfo);
+}
 //WARNING i'm not so sure this will work
-function getprofileinfo(username){
-  var profile;
+function getprofileinfo(resolve, reject){
+  console.log('perofileof: ' username);
   //Select all the account information from the DB according to the required user
+  //first query
   connection.query("SELECT * FROM profile WHERE username = '"+username+"'", function(err, result, fields){
       if(err){
-        console.log(err);
+
+        reject(err);
       }else{
         profile.about = result[0].DESC_PROFILE;
-        profile.links = {
-          iglink: result[0].IG_PROFILE_LINK,
-          fblink: result[0].FB_PROFILE_LINK,
-          twlink: result[0].TW_PROFILE_LINK,
-          olink: result[0].OTHER_LINK
-        };
+        profile.links.iglink = result[0].IG_PROFILE_LINK;
+        profile.links.fblink = result[0].FB_PROFILE_LINK;
+        profile.links.twlink = result[0].TW_PROFILE_LINK;
+        profile.links.olink = result[0].OTHER_LINK;
         profile.imgdir = result[0].DIR_PROFILE_IMG;
+        //second query
+        //get the number of followers of the account
+        connection.query("SELECT count(follower_account_name) AS NFOLLOW FROM followers WHERE username = '"+username+"'",
+        function(err, result, fields){
+          if(err) reject(err);
+          else {
+            profile.followers = result[0].NFOLLOW;
+            resolve();
+          }
+        });
       }
   });
-  //get the number of followers of the account
-  connection.query("SELECT count(follower_account_name) AS NFOLLOW FROM followers WHERE username = '"+username+"'",
-  function(err, result, fields){
-    if(err) console.log(err);
-    else {
-      profile.followers = result[0].NFOLLOW;
-    }
-  });
-
-  return profile;
+  console.log(profile);
 }
