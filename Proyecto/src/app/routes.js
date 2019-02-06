@@ -40,6 +40,8 @@ let profile = {
   followers: ""
 };
 let username = null;
+let artistname = null;
+let other = false;
 module.exports=(app,passport)=>{
     /*Function used to get the index*/
     app.get('/',(req,res)=>{
@@ -122,7 +124,6 @@ module.exports=(app,passport)=>{
 // Default album: Single
 //-----------------------------------------------------------------------------------------------------------------
         var artist_album_song = '../src/public/media_files/'+req.body.artist+'/'+req.body.album;
-
         if(!fs.existsSync(artist_album_song)){
             //console.log('creating directory');
             fs.mkdir(artist_album_song, {recursive:true}, function(err){
@@ -141,10 +142,7 @@ module.exports=(app,passport)=>{
                 }
             });
         }
-
-
         res.end();
-
     });
 
     app.get('/main', async(req, res)=>{
@@ -245,7 +243,9 @@ module.exports=(app,passport)=>{
         res.send(songs);
     });
 
+    /*Get request to load a personal profile*/
     app.get('/main/myprofile', async(req, res)=>{
+      console.log(req.user);
       console.log('Accessing a profile:'+req.user.USERNAME);
       //To get the correct profile, first we need to know what account type it is
       if(req.user.TYPE_ACCOUNT == 'Artist'){
@@ -258,8 +258,6 @@ module.exports=(app,passport)=>{
           ------ objective of this function --------
           Read all the names of the artist's albums.
         */
-
-
         //Check getprofileinfo function documentation
         console.log('retrieving data');
         getinfo().then(function(){
@@ -341,6 +339,13 @@ module.exports=(app,passport)=>{
           res.redirect('/profile');
         }
       });
+      fs.mkdir('../src/public/media_files/'+req.user.USERNAME+'/Single', {recursive:true}, function(err){
+          if(err){
+              console.log(err);
+          }else{
+            console.log('created: '+'../src/public/media_files/'+req.body.username);
+          }
+      });
       res.redirect('/main');
 
     });
@@ -349,42 +354,98 @@ module.exports=(app,passport)=>{
       var username = req.user.USERNAME;
       res.render('profile', {username});
     });
+
     /*Get an users profile */
     app.get('/profile/:artist', async (req, res) => {
-        /*read all data from db*/
-        var profile = getprofileinfo(req.params.artist);
-        var artist = '../src/public/media_files/'+req.params.artist;
-        if(!fs.existsSync(artist)){
-          fs.mkdir(artist, {recursive:true}, function(err){
+      other = true;
+      console.log('Accessing a profile:'+req.params.artist);
+      //To get the correct profile, first we need to know what account type it is
+
+        //If it's an artist account, we proceed to get the albums
+        /*
+          Author: ismalfmp
+          Albums is an array of directories names.
+          ------ objective of this function --------
+          Read all the names of the artist's albums.
+        */
+        //Check getprofileinfo function documentation
+        console.log('retrieving data');
+        getinfo().then(function(){
+            var albums = fs.readdirSync('../src/public/media_files/'+req.params.artist);
+            var albumsd=[];
+            console.log(albums);
+            var songs = [];
+            var song2 = {};
+            var albums2 = {};
+            /*
+              Author: ismalfmp
+              Songs is an array of songs names.
+              ---------------- objetive of this function -----------------
+              Read all the songs contained on each Album (from var Albums)
+            */
+            albums.forEach(album=>{
+              //read the names on each album and save them on an array.
+              if(album!='img.jpeg'){
+                albums2.album = album;
+                albums2.artist = username;
+                albumsd.push(albums2);
+                var tmp = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+album);
+              //save the song's name without the extension.
+                tmp.forEach(song => {
+                  song2.title = song.split('.')[0];
+                  song2.album = album;
+                  songs.push(song2);
+                });
+              }
+            });
+            console.log(songs);
+            var editable = false;
+            console.log('loading profile of');
+            console.log(req.params.artist);
+            var numofsongs = songs.length;
+            var numofalbums = albums.length;
+            other = false;
+            res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albumsd});
+        }).catch(function(p){
+          console.log(p);
+        });
+    });
+
+    /*subscribe to a new artist*/
+    app.post('/subscribe/:username', async(req, res) => {
+      connection.query("INSERT INTO followers (id_account, username, follower_id_account, follower_account_name)"+
+      "VALUES ((SELECT id_account FROM account WHERE username = '"+req.params.username+"'),'"
+      +req.params.username+"','"+req.user.ID_ACCOUNT+"','"+req.user.USERNAME+"')", function(err, results){
+      if(err) console.log(err);
+      });
+      setnewtopartist();
+      res.end();
+    });
+
+    /*create an album*/
+    app.post('/create_album', upload.single('avatar'),async(req, res)=>{
+
+      var dir = '../src/public/media_files/'+req.user.USERNAME+'/'+req.body.albumtitle;
+
+      fs.mkdir(dir, {recursive:true}, function(err){
+        if(err) console.log(err);
+        else{
+          fs.rename('../src/public/media_files/tmp/'+req.file.originalname, dir+'/img.jpeg', function(err){
               if(err){
                   console.log(err);
               }else{
-                  //console.log('succes ;)');
+                  //console.log('success');
+                  dirimg = '../media_files/'+req.user.USERNAME+'/'+req.body.albumtitle;
+                  connection.query("INSERT INTO album (id_account, username, title_alb, year_alb, dir_alb, dir_albImg)"+
+                  "VALUES ('"+req.user.ID_ACCOUNT+"','"+req.user.USERNAME+"','"+req.body.albumtitle+"','"+req.body.year+"','"+
+                  dir+"','"+dirimg+"'/img.jpeg')",function(err, results){
+                    if(err) console.log(err);
+                  });
               }
           });
         }
-        usrinfo = {
-            usrname: req.params.artist,
-            songs:"",
-            albums:""
-        }
-
-        //obtener albums del artista
-        var albums = fs.readdirSync('../src/public/media_files/'+req.params.artist);
-        //obtener todas las canciones del artista
-        var songs = [];
-        albums.forEach(album=>{
-            var tmp = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+album);
-            tmp.forEach(song => {
-                songs.push(song.split('.')[0]);
-            });
-        });
-        usrinfo.usrname = req.params.artist;
-        usrinfo.songs = songs.length;
-        usrinfo.albums = albums.length;
-        var editable = false;
-        console.log(songs);
-        res.render('partials/_profile',{albums, songs, usrinfo, editable, profile});
+      });
+      req.redirect('/main/myprofile');
     });
 };
 
@@ -401,8 +462,9 @@ function getinfo(){
 }
 //WARNING i'm not so sure this will work
 function getprofileinfo(resolve, reject){
+
+  if(other){username = artistname;}
   console.log('perofileof: '+ username);
-  if(username == null) reject('no user');
   //Select all the account information from the DB according to the required user
   //first query
   connection.query("SELECT * FROM profile WHERE username = '"+username+"'", function(err, result, fields){
@@ -430,4 +492,19 @@ function getprofileinfo(resolve, reject){
       }
   });
 
+}
+
+/*Function to set the new top artists*/
+function setnewtopartist(){
+  connection.query("SELECT username, count(id_account) FROM followers GROUP BY username ORDER BY count(id_account)",
+  function(err, results){
+    results.forEach(result => {
+      data += dir+result.USERNAME+'\r';
+    });
+    var data="";
+    var dir = "../src/public/media_files/";
+    fs.writeFile("../src/public/media_files/Top/TopArtists.data",data, function(err){
+      if(err) console.log(err);
+    });
+  });
 }

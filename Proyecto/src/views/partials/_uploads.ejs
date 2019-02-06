@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Upload a Song</h4>
+                <h4 class="modal-title w-100 font-weight-bold" style="color:black;">Upload a Song</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closecr">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -14,8 +14,10 @@
                     <input type="text" placeholder="Song Title" name="songtitle" class="form-control" >
                     <input type="text" placeholder="Artist" name="artist" class="form-control" >
                     <select form="dataform" name="album">
-                        <option selected>Albumx</option>
-                        <option>Single</option>
+                        <option selected>Single</option>
+                        <%for(var i = 0; i < albumsd.length; i++){%>
+                          <option><%=albumsd[i].album%></option>
+                        <%}%>
                     </select>
                     <input type="file" name="myfile" multiple/>
                     <hr>

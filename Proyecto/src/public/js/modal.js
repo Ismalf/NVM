@@ -6,18 +6,27 @@ $('body').on('click', "#uploadbtn",function(){
   span = document.getElementsByClassName("close")[0];
   modal.style.display = "block";
 });
-$('body').on('click', "#closecr", function(){
-
-  $('#myModal').css('display', 'none');
-  
-
+$('body').on('click', "#createbtn",function(){
+  console.log('ok');
+  modal = document.getElementById('createModal');
+  span = document.getElementsByClassName("close")[0];
+  modal.style.display = "block";
 });
-$('body').on('click', "#uploadmedia", function(){
 
+$('body').on('click', "#closecr", function(){
+  modal.style.display = "none";
+  //$('#myModal').css('display', 'none');
+});
+
+$('body').on('click', "#uploadmedia", function(){
   $('#myModal').on('click', function(){
     $(this).css('display', 'none');
   });
-
+});
+$('body').on('click', "#createalbum", function(){
+  $('#createModal').on('click', function(){
+    $(this).css('display', 'none');
+  });
 });
 // When the user clicks the button, open the modal
 /*btn.onclick = function() {

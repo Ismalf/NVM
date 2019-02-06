@@ -50,13 +50,27 @@ $("#myprofile").on('click', function(event){
         url: '/main/myprofile',
         type: 'GET'
     }).done(function(result){
-      
+
         replace(result);
     }).fail(function(err){
         console.log(err);
     });
 });
 
+$("#createalbum").on('click', function(event){
+    console.log('hey');
+    event.preventDefault();
+    event.stopPropagation();
+    $.ajax({
+        url: '/main/popartists',
+        type: 'GET'
+    }).done(function(result){
+
+        replace(result);
+    }).fail(function(err){
+        console.log(err);
+    });
+});
 
 function replace(xhttp){
     var div = document.getElementById("mainbody");
