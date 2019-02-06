@@ -78,7 +78,7 @@ $('body').on('click', "#artistcard",function(event){
   console.log($('#album_artist').text());
   $.ajax({
 
-      url: '/profile/'+$('#album_artist').text(),
+      url: '/profile/'+$('#artistcardusername').text(),
       type: 'GET'
   }).done(function(result){
 
@@ -90,13 +90,13 @@ $('body').on('click', "#artistcard",function(event){
 $('body').on('click', "#artistcards",function(event){
   event.preventDefault();
   event.stopPropagation();
-  console.log($('#user_name').text());
+  console.log($('user_name').text());
   $.ajax({
       url: '/subscribe/'+$('#user_name').text(),
       type: 'POST'
   }).done(function(result){
 
-      replace(result);
+      //replace(result);
   }).fail(function(err){
       console.log(err);
   });

@@ -3,8 +3,8 @@
     <div class="row">
         <div class="col">
           <%if(editable){%>
-            <button type="button" class="btn btn-info">Edit</button>
-            <button type="button" class="btn btn-success">Save</button>
+            <!--<button type="button" class="btn btn-info">Edit</button>
+            <button type="button" class="btn btn-success">Save</button>-->
             <%include _uploads%>
             <%include _createalbum%>
           <%}%>
@@ -17,7 +17,7 @@
     <div class="row mt-5">
         <!--Info-->
         <div class="col-md-4">
-            <div class="card artistcard" onclick="subscribe(<%=username%>)" id="artistcards">
+            <div class="card artistcard" id="artistcards">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6 cc profimg">

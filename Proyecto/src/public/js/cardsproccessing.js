@@ -1,5 +1,6 @@
 
 function getProfile(artist_id){
+  console.log('artistttt');
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/profile/'+artist_id, true);
     xhr.send();

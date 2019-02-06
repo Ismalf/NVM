@@ -353,6 +353,7 @@ module.exports=(app,passport)=>{
             console.log('created: '+'../src/public/media_files/'+req.body.username);
           }
       });
+      setnewtopartist();
       res.redirect('/main');
 
     });
@@ -387,7 +388,7 @@ module.exports=(app,passport)=>{
             console.log('loading profile of');
             console.log(username);
             getAlbums().then(getSongs().then(function(){
-                  var editable = true;
+                  var editable = false;
                   var numofsongs = songs.length;
                   var numofalbums = albumsd.length;
                   other = false;
@@ -550,13 +551,16 @@ function searchSongs(resolve, reject){
 /*Function to set the new top artists*/
 function setnewtopartist(){
   connection.query("SELECT username, count(id_account) FROM followers GROUP BY username ORDER BY count(id_account)",
-  function(err, results){
+  function(err, results, fields){
     var data="";
-    results.forEach(result => {
-      data += dir+result.USERNAME+'\r';
-    });
-
     var dir = "../src/public/media_files/";
+    console.log(results);
+    for(var i = 0; i<results.length; i++){
+      data+= dir+results[i].username+'\r\n'
+    }
+
+    console.log(data);
+
     fs.writeFile("../src/public/media_files/Top/TopArtists.data",data, function(err){
       if(err) console.log(err);
     });
