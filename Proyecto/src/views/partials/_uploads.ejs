@@ -9,7 +9,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body mx-3">
+            <div class="modal-body mx-3" style="color:black;">
                 <form action="/upload_media" method="post" enctype="multipart/form-data" id="dataform">
                     <input type="text" placeholder="Song Title" name="songtitle" class="form-control" >
                     <input type="text" placeholder="Year of release" name="year" class="form-control" >
@@ -19,7 +19,7 @@
                           <option><%=albumsd[i].album%></option>
                         <%}%>
                     </select>
-                    <input type="file" name="myfile" multiple/>
+                    <input type="file" name="song"/>
                     <hr>
                     <input type="submit" class="btn btn-primary btn-block" value="Upload" id="uploadmedia">
                 </form>

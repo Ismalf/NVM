@@ -120,7 +120,7 @@ module.exports=(app,passport)=>{
         });
     });
 
-    app.post('/upload_media', upload.any(), function (req, res)  {
+    app.post('/upload_media', upload.single('song'), function (req, res)  {
 
 //------------------------------------------------ Artist's Music -------------------------------------------------
 // Music files are saved in directories.
@@ -135,34 +135,41 @@ module.exports=(app,passport)=>{
                 if(err){
                     console.log(err);
                 }else{
-                  req.files.forEach((file)=>{
-                      fs.rename('../src/public/media_files/tmp/'+file.originalname, artist_album_song+'/'+file.originalname, function(err){
-                          if(err){
-                              console.log(err);
-                          }else{
-
-                          }
-                      });
-                  });
+                  var newname = req.body.songtitle;
+                  newname += req.file.originalname.split('.')[1];
+                    fs.rename('../src/public/media_files/tmp/'+req.file.originalname, artist_album_song+'/'+newname, function(err){
+                        if(err){
+                            console.log(err);
+                        }else{
+                        }
+                    });
+                    var songdir= '../media_files/'+req.user.USERNAME+'/'+req.body.album+'/'+newname;
+                    console.log('execute query');
+                     connection.query("INSERT INTO song (id_account, username, id_alb, title, lenght, year, dir_song, dir_songImg)"+
+                     "VALUES ("+req.user.ID_ACCOUNT+",'"+req.user.USERNAME+"',(SELECT id_alb FROM album WHERE title_alb = '"
+                     +req.body.album+"'),'"+req.body.songtitle+"','3:00','"+req.body.year+"','"+songdir+"','"+songdir+"')", function(err, results){
+                       if(err) console.log(err);
+                     });
                 }
             });
         }else{
-          req.files.forEach((file)=>{
-              fs.rename('../src/public/media_files/tmp/'+file.originalname, artist_album_song+'/'+file.originalname, function(err){
-                  if(err){
-                      console.log(err);
-                  }else{
-                    var songdir= '../media_files/'+req.user.USERNAME+'/'+req.body.album+'/'+file.originalname;
-                     connection.query("INSERT INTO song (id_account, username, id_alb, title, lenght, year, dir_song, dir_songImg)"+
-                     "VALUES ("+req.user.ID_ACCOUNT+",'"+req.user.USERNAME+"',(SELECT id_alb FROM album WHERE title = '"
-                     +req.body.album+"'),'3:00','"+req.body.year+"','"+songdir+"','"+songdir+"')", function(err, results){
-                       if(err) console.log(err);
-                     });
-                  }
-              });
-          });
+          var newname = req.body.songtitle;
+          newname += req.file.originalname.split('.')[1];
+            fs.rename('../src/public/media_files/tmp/'+req.file.originalname, artist_album_song+'/'+newname, function(err){
+                if(err){
+                    console.log(err);
+                }else{
+                }
+            });
+            var songdir= '../media_files/'+req.user.USERNAME+'/'+req.body.album+'/'+newname;
+            console.log('execute query');
+             connection.query("INSERT INTO song (id_account, username, id_alb, title, lenght, year, dir_song, dir_songImg)"+
+             "VALUES ("+req.user.ID_ACCOUNT+",'"+req.user.USERNAME+"',(SELECT id_alb FROM album WHERE title_alb = '"
+             +req.body.album+"'),'"+req.body.songtitle+"','3:00','"+req.body.year+"','"+songdir+"','"+songdir+"')", function(err, results){
+               if(err) console.log(err);
+             });
         }
-        res.redirect('/main/myprofile');
+        res.redirect('/main');
     });
 
     app.get('/main', async(req, res)=>{
@@ -331,9 +338,7 @@ module.exports=(app,passport)=>{
           }
       });
       var imgdir = '../media_files/'+req.user.USERNAME+'/img.jpeg';
-      var query = "INSERT INTO profile (id_account, username, IG_profile_link, FB_profile_link, TW_profile_link, Other_link, desc_profile, dir_profile_img)"+
-       "VALUES ((SELECT id_account FROM account WHERE username = '"+req.user.USERNAME+"'), '"+req.user.USERNAME+"','"+req.body.ig+"','"+req.body.fb+"','"
-      +req.body.tw+"','"+req.body.other+"','"+req.body.about+"','"+imgdir+"');"
+      var query = "INSERT INTO profile (id_account, username, IG_profile_link, FB_profile_link, TW_profile_link, Other_link, desc_profile, dir_profile_img)VALUES ((SELECT id_account FROM account WHERE username = '"+req.user.USERNAME+"'), '"+req.user.USERNAME+"','"+req.body.ig+"','"+req.body.fb+"','"+req.body.tw+"','"+req.body.other+"','"+req.body.about+"','"+imgdir+"');"
       connection.query(query, function(err, result){
         if(err){
           console.log(err);
@@ -361,8 +366,8 @@ module.exports=(app,passport)=>{
     app.get('/profile/:artist', async (req, res) => {
       other = true;
       console.log('Accessing a profile:'+req.params.artist);
-      //To get the correct profile, first we need to know what account type it is
-
+        artistname = req.params.artist;
+        console.log('acceding my profile');
         //If it's an artist account, we proceed to get the albums
         /*
           Author: ismalfmp
@@ -373,41 +378,22 @@ module.exports=(app,passport)=>{
         //Check getprofileinfo function documentation
         console.log('retrieving data');
         getinfo().then(function(){
-            var albums = fs.readdirSync('../src/public/media_files/'+req.params.artist);
-            var albumsd=[];
-            console.log(albums);
-            var songs = [];
-            var song2 = {};
-            var albums2 = {};
             /*
               Author: ismalfmp
               Songs is an array of songs names.
               ---------------- objetive of this function -----------------
               Read all the songs contained on each Album (from var Albums)
             */
-            albums.forEach(album=>{
-              //read the names on each album and save them on an array.
-              if(album!='img.jpeg'){
-                albums2.album = album;
-                albums2.artist = username;
-                albumsd.push(albums2);
-                var tmp = fs.readdirSync('../src/public/media_files/'+req.params.artist+'/'+album);
-              //save the song's name without the extension.
-                tmp.forEach(song => {
-                  song2.title = song.split('.')[0];
-                  song2.album = album;
-                  songs.push(song2);
-                });
-              }
-            });
-            console.log(songs);
-            var editable = false;
             console.log('loading profile of');
-            console.log(req.params.artist);
-            var numofsongs = songs.length;
-            var numofalbums = albums.length;
-            other = false;
-            res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albumsd});
+            console.log(username);
+            getAlbums().then(getSongs().then(function(){
+                  var editable = true;
+                  var numofsongs = songs.length;
+                  var numofalbums = albumsd.length;
+                  other = false;
+                  res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albumsd});
+                }
+              ));
         }).catch(function(p){
           console.log(p);
         });
@@ -458,7 +444,7 @@ module.exports=(app,passport)=>{
           albumsd.push(albums2);
         }
       });
-      res.redirect('/main/myprofile');
+      res.redirect('/main');
       //res.render('/partials/_uploads',{albumsd});
     });
 };
@@ -471,7 +457,7 @@ function isLoggedIn(req, res, next){
 }
 
 function getinfo(){
-  if(username == null) return;
+  
   return new Promise(getprofileinfo);
 }
 //WARNING i'm not so sure this will work

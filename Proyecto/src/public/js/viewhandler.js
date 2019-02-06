@@ -57,6 +57,36 @@ $("#myprofile").on('click', function(event){
     });
 });
 
+$("#artistcard").on('click', function(event){
+    event.preventDefault();
+    event.stopPropagation();
+    console.log($('#album_artist').text());
+    $.ajax({
+
+        url: '/profile/'+$('#album_artist').text(),
+        type: 'GET'
+    }).done(function(result){
+
+        replace(result);
+    }).fail(function(err){
+        console.log(err);
+    });
+});
+$('body').on('click', "#artistcard",function(event){
+  event.preventDefault();
+  event.stopPropagation();
+  console.log($('#album_artist').text());
+  $.ajax({
+
+      url: '/profile/'+$('#album_artist').text(),
+      type: 'GET'
+  }).done(function(result){
+
+      replace(result);
+  }).fail(function(err){
+      console.log(err);
+  });
+});
 $("from#dataform").submit(function(event){
     console.log('hey');
     event.preventDefault();
