@@ -28,6 +28,10 @@ var connection = mysql.createConnection(dbconfig.connection);
 
 connection.query('USE ' + dbconfig.database);
 
+let albumsd = [];
+let albums = {};
+let songs = [];
+let song = {};
 let profile = {
   about: "",
   links: {
@@ -42,6 +46,7 @@ let profile = {
 let username = null;
 let artistname = null;
 let other = false;
+
 module.exports=(app,passport)=>{
     /*Function used to get the index*/
     app.get('/',(req,res)=>{
@@ -135,19 +140,29 @@ module.exports=(app,passport)=>{
                           if(err){
                               console.log(err);
                           }else{
-                             var songdir= '../media_files/'+req.user.USERNAME+'/'+req.body.album+'/'+file.originalname;
-                              connection.query("INSERT INTO song (id_account, username, id_alb, title, lenght, year, dir_song, dir_songImg)"+
-                              "VALUES ("+req.user.ID_ACCOUNT+",'"+req.user.USERNAME+"',(SELECT id_alb FROM album WHERE title = '"
-                              +req.body.album+"'),'3:00','"+req.body.year+"','"+songdir+"','"+songdir+"')", function(err, results){
-                                if(err) console.log(err);
-                              });
+
                           }
                       });
                   });
                 }
             });
+        }else{
+          req.files.forEach((file)=>{
+              fs.rename('../src/public/media_files/tmp/'+file.originalname, artist_album_song+'/'+file.originalname, function(err){
+                  if(err){
+                      console.log(err);
+                  }else{
+                    var songdir= '../media_files/'+req.user.USERNAME+'/'+req.body.album+'/'+file.originalname;
+                     connection.query("INSERT INTO song (id_account, username, id_alb, title, lenght, year, dir_song, dir_songImg)"+
+                     "VALUES ("+req.user.ID_ACCOUNT+",'"+req.user.USERNAME+"',(SELECT id_alb FROM album WHERE title = '"
+                     +req.body.album+"'),'3:00','"+req.body.year+"','"+songdir+"','"+songdir+"')", function(err, results){
+                       if(err) console.log(err);
+                     });
+                  }
+              });
+          });
         }
-        res.end();
+        res.redirect('/main/myprofile');
     });
 
     app.get('/main', async(req, res)=>{
@@ -266,40 +281,22 @@ module.exports=(app,passport)=>{
         //Check getprofileinfo function documentation
         console.log('retrieving data');
         getinfo().then(function(){
-            var albums = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME);
-            var albumsd=[];
-            console.log(albums);
-            var songs = [];
-            var song2 = {};
-            var albums2 = {};
             /*
               Author: ismalfmp
               Songs is an array of songs names.
               ---------------- objetive of this function -----------------
               Read all the songs contained on each Album (from var Albums)
             */
-            albums.forEach(album=>{
-              //read the names on each album and save them on an array.
-              if(album!='img.jpeg'){
-                albums2.album = album;
-                albums2.artist = username;
-                albumsd.push(albums2);
-                var tmp = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME+'/'+album);
-              //save the song's name without the extension.
-                tmp.forEach(song => {
-                  song2.title = song.split('.')[0];
-                  song2.album = album;
-                  songs.push(song2);
-                });
-              }
-            });
-            console.log(songs);
-            var editable = true;
+
             console.log('loading profile of');
             console.log(username);
-            var numofsongs = songs.length;
-            var numofalbums = albums.length - 1;
-            res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albumsd});
+            getAlbums().then(getSongs().then(function(){
+                  var editable = true;
+                  var numofsongs = songs.length;
+                  var numofalbums = albumsd.length;
+                  res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albumsd});
+                }
+              ));
         }).catch(function(p){
           console.log(p);
         });
@@ -443,7 +440,7 @@ module.exports=(app,passport)=>{
                   dirimg = '../media_files/'+req.user.USERNAME+'/'+req.body.albumtitle;
                   connection.query("INSERT INTO album (id_account, username, title_alb, year_alb, dir_alb, dir_albImg)"+
                   "VALUES ("+req.user.ID_ACCOUNT+",'"+req.user.USERNAME+"','"+req.body.albumtitle+"',"+req.body.year+",'"+
-                  dir+"','"+dirimg+"'/img.jpeg')",function(err, results){
+                  dir+"','"+dirimg+"/img.jpeg')",function(err, results){
                     if(err) console.log(err);
                   });
               }
@@ -461,7 +458,8 @@ module.exports=(app,passport)=>{
           albumsd.push(albums2);
         }
       });
-      req.render('/partials/_uploads',{albumsd});
+      res.redirect('/main/myprofile');
+      //res.render('/partials/_uploads',{albumsd});
     });
 };
 
@@ -510,6 +508,59 @@ function getprofileinfo(resolve, reject){
 
 }
 
+function getAlbums(){
+  albumsd.forEach(album => {
+    albumsd.pop();
+  });
+  return new Promise(searchalbums);
+}
+
+function searchalbums(resolve, reject){
+  if(other){username = artistname;}
+  console.log('perofileof: '+ username);
+  //Select all the account information from the DB according to the required user
+  //first query
+  connection.query("SELECT * FROM album WHERE username = '"+username+"'", function(err, results){
+    if(err) console.log(err);
+    else{
+      results.forEach(result => {
+        albums.album = result.TITLE_ALB;
+        albums.artist = result.USERNAME;
+        albumsd.push(albums);
+      });
+      console.log(albumsd);
+      resolve();
+    }
+  });
+}
+
+function getSongs(){
+  songs.forEach(song => {
+    songs.pop();
+  });
+  return new Promise(searchSongs);
+}
+
+function searchSongs(resolve, reject){
+  if(other){username = artistname;}
+  console.log('perofileof: '+ username);
+  //Select all the account information from the DB according to the required user
+  //first query
+  connection.query("SELECT * FROM song s, album a WHERE s.username = '"+username+"' AND a.username = '"+username+"'", function(err, results){
+    if(err) console.log(err);
+    else{
+      results.forEach(result => {
+        song.album = result.TITLE_ALB;
+        song.artist = result.USERNAME;
+        song.title = result.TITLE;
+        song.title = song.title.split('.')[0];
+        songs.push(song);
+      });
+      console.log(songs);
+      resolve();
+    }
+  });
+}
 /*Function to set the new top artists*/
 function setnewtopartist(){
   connection.query("SELECT username, count(id_account) FROM followers GROUP BY username ORDER BY count(id_account)",

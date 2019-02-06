@@ -74,7 +74,7 @@ $("from#dataform").submit(function(event){
         processData: false
     }).done(function(result){
 
-        replacesimple(result);
+        replace(result);
     }).fail(function(err){
         console.log(err);
     });
