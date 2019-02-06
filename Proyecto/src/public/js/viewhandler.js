@@ -87,6 +87,21 @@ $('body').on('click', "#artistcard",function(event){
       console.log(err);
   });
 });
+$('body').on('click', "#artistcards",function(event){
+  event.preventDefault();
+  event.stopPropagation();
+  console.log($('#user_name').text());
+  $.ajax({
+      url: '/subscribe/'+$('#user_name').text(),
+      type: 'POST'
+  }).done(function(result){
+
+      replace(result);
+  }).fail(function(err){
+      console.log(err);
+  });
+});
+
 $("from#dataform").submit(function(event){
     console.log('hey');
     event.preventDefault();

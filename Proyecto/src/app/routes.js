@@ -457,7 +457,7 @@ function isLoggedIn(req, res, next){
 }
 
 function getinfo(){
-  
+
   return new Promise(getprofileinfo);
 }
 //WARNING i'm not so sure this will work
@@ -551,10 +551,11 @@ function searchSongs(resolve, reject){
 function setnewtopartist(){
   connection.query("SELECT username, count(id_account) FROM followers GROUP BY username ORDER BY count(id_account)",
   function(err, results){
+    var data="";
     results.forEach(result => {
       data += dir+result.USERNAME+'\r';
     });
-    var data="";
+
     var dir = "../src/public/media_files/";
     fs.writeFile("../src/public/media_files/Top/TopArtists.data",data, function(err){
       if(err) console.log(err);
