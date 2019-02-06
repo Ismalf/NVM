@@ -99,10 +99,13 @@
     <!--print 4 albums per row-->
     <div class="albumcontainer" id="albumcontainer">
         <div class="row cc mt-3">
+          <%for(var i = 0; i < albumsd.length; i++){%>
             <%include _profilealbumcard%>
+          <%}%>
         </div>
     </div>
 </div>
 <script src="../js/modal.js"></script>
+<script src="../js/cardsproccessing.js"></script>
 <!--User's songs-->
 <%include _profilesongstable%>

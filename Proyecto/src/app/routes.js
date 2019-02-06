@@ -249,6 +249,7 @@ module.exports=(app,passport)=>{
       console.log('Accessing a profile:'+req.user.USERNAME);
       //To get the correct profile, first we need to know what account type it is
       if(req.user.TYPE_ACCOUNT == 'Artist'){
+        username = req.user.USERNAME;
         console.log('acceding my profile');
         //If it's an artist account, we proceed to get the albums
         /*
@@ -257,35 +258,45 @@ module.exports=(app,passport)=>{
           ------ objective of this function --------
           Read all the names of the artist's albums.
         */
-        console.log(req.user.USERNAME);
-        var albums = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME);
-        var songs = [];
-        /*
-          Author: ismalfmp
-          Songs is an array of songs names.
-          ---------------- objetive of this function -----------------
-          Read all the songs contained on each Album (from var Albums)
-        */
-        albums.forEach(album=>{
-          //read the names on each album and save them on an array.
-          if(album!='img.jpeg'){
-            var tmp = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME+'/'+album);
-          //save the song's name without the extension.
-            tmp.forEach(song => {
-                songs.push(song.split('.')[0]);
-            });
-          }
-        });
-        var editable = true;
-        username = req.user.USERNAME;
-        console.log('loading profile of');
-        console.log(username);
-        var numofsongs = songs.length;
-        var numofalbums = albums.length;
+
+
         //Check getprofileinfo function documentation
         console.log('retrieving data');
         getinfo().then(function(){
-            res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albums});
+            var albums = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME);
+            var albumsd=[];
+            console.log(albums);
+            var songs = [];
+            var song2 = {};
+            var albums2 = {};
+            /*
+              Author: ismalfmp
+              Songs is an array of songs names.
+              ---------------- objetive of this function -----------------
+              Read all the songs contained on each Album (from var Albums)
+            */
+            albums.forEach(album=>{
+              //read the names on each album and save them on an array.
+              if(album!='img.jpeg'){
+                albums2.album = album;
+                albums2.artist = username;
+                albumsd.push(albums2);
+                var tmp = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME+'/'+album);
+              //save the song's name without the extension.
+                tmp.forEach(song => {
+                  song2.title = song.split('.')[0];
+                  song2.album = album;
+                  songs.push(song2);
+                });
+              }
+            });
+            console.log(songs);
+            var editable = true;
+            console.log('loading profile of');
+            console.log(username);
+            var numofsongs = songs.length;
+            var numofalbums = albums.length;
+            res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albumsd});
         }).catch(function(p){
           console.log(p);
         });
