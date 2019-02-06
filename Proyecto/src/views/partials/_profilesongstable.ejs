@@ -1,0 +1,33 @@
+<div class="container mt-5 fadeineff">
+    <div class="row fixed">
+        <div class="col cc">
+            <h2>Songs</h2>
+        </div>
+    </div>
+    <table class="table ">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Album</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="songlist">
+            <!--Fill dynamically-->
+            <%for(var i = 0; i<songs.length; i++){%>
+                <tr>
+                    <td><%=songs[i].title%></td>
+                    <td><%=songs[i].album%></td>
+                    <td><i class="material-icons"
+                      onclick="play_song('<%=songs[i].artist%>',
+                      '<%=songs[i].album%>',
+                      '<%=songs[i].title%>')">play_arrow</i></td>
+                    <td><i class="material-icons"
+                    onclick="add_song('<%=songs[i].artist%>','<%=songs[i].album%>','<%=songs[i].title%>')"
+                           id="<%=songs[i].artist%>/<%=songs[i].album%>/<%=songs[i].title%>/add">playlist_add</i></td>
+                </tr>
+            <%}%>
+        </tbody>
+    </table>
+</div>

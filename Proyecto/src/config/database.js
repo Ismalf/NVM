@@ -1,9 +1,10 @@
+//DB Connect
 module.exports = {
  'connection':{
   'host':'localhost',
   'user':'root',
   'password':'ismalfmp'
  },
- 'database':'prograavan',
+ 'database':'prograavanzada',
  'user_table':'users'
 }

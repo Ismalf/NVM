@@ -11,182 +11,28 @@
         <!--Top navigation bar-->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <img class="navbar-brand" src="../assets/nm.png">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/main/albums">Discover <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
-        </div>
         </nav>
-
         <div role="main" class="container maincontainer">
-
-            <!--Check user permisions to edit profile-->
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <button type="button" class="btn btn-info">Edit</button>
-                        <button type="button" class="btn btn-success">Save</button>
-                        <button type="button" class="btn" id="uploadbtn">Upload</button>
-                        <%include partials/_uploads %>
-                        
-                    </div>
-                </div>
+          <div class="card">
+            <div class="card-body">
+              <h4>Welcome <%=username%>! Final Steps to complete your profile</h4>
+              <form action="/fillprofile" method="post" id="userdata" enctype="multipart/form-data">
+                <input type="text" placeholder="Instagram Account Link" name="ig" class="form-control">
+                <input type="text" placeholder="Facebook Account Link" name="fb" class="form-control">
+                <input type="text" placeholder="Twitter Account Link" name="tw" class="form-control">
+                <input type="text" placeholder="Others" name="other" class="form-control">
+                <hr>
+                <textarea type="text" placeholder="About you:" name="about" class="form-control" rows="5" required></textarea>
+                <hr>
+                <input placeholder="Upload a photo of you" type="file" name="avatar"/>
+                <hr>
+                <input type="submit" class="btn btn-succcess btn-lg" value="Fill my profile!">
+              </form>
             </div>
-
-            <!--User basic info-->
-            <div class="container mt-6">
-                <div class="row mt-5">
-                    <!--Info-->
-                    <div class="col-md-4">
-                        <div class="card artistcard">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6 cc">
-                                        <img src="../assets/user.png">
-                                        <br>
-                                        <label id="user_name">username</label>
-                                    </div>
-                                    <div class="col-6">
-                                        <label id="user_followers"># Followers</label>
-                                        <hr>
-                                        <label id="user_songs"># Songs</label>
-                                        <hr>
-                                        <label id="user_albums"># Albums</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--About-->
-                    <div class="col-md-5 d-flex align-self-stretch">
-                        <div class="card ">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <label><h3>About me</h3></label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <!--Max number of chars 201-->
-                                    <div class="col">
-                                    <p id="user_description" class="justify-content">
-                                        carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem  diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem carpe diem caprdie.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Contact-->
-                    <div class="col-md-3 d-flex align-self-center flex-column">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <label><h4>Contact</h4></label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <a id="user_contact" href="">FB</a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <a id="user_contact" href="">Gmail</a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <a id="user_contact" href="">Twitter</a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <a id="user_contact" href="">Instagram</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--User's albums-->
-            <div class="container mt-5">
-                <div class="row fixed">
-                    <div class="col cc">
-                        <h2>Albums</h2>
-                    </div>
-                </div>
-                <!--Fill dynamically-->
-                <!--print 4 albums per row-->
-                <div class="albumcontainer" id="albumcontainer">
-                    <div class="row cc mt-3">
-                        <div class="col-3">
-                            <div class="card albumcard">
-                                <div class="card-body">
-                                    <!--Album portrait-->
-                                    <img src="../assets/defaultdisc.png" class="albumimg">
-                                    <hr>
-                                    <!--Album title-->
-                                    <label id="album_title">Album title goes here</label>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--User's songs-->
-            <div class="container mt-5">
-                <div class="row fixed">
-                    <div class="col cc">
-                        <h2>Songs</h2>
-                    </div>
-                </div>
-                <table class="table ">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Duration</th>
-                            <th>Album</th>
-                            <th>Year of Release</th>
-                        </tr>
-                    </thead>
-                    <tbody id="songlist">
-                        <!--Fill dynamically-->
-
-                        <tr>
-                            <td>Song's title goes here</td>
-                            <td>Song's duration goes here</td>
-                            <td>Song's album goes here</td>
-                            <td>Song's year of release goes here</td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
+          </div>
         </div>
-
         <!--Scripts-->
     </body>
     <footer>
-        
-        <!--Scripts for the Music player-->
-        <!--Music player-->
-        
     </footer>
 </html>

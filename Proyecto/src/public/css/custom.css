@@ -1,3 +1,92 @@
+/*Profile styling*/
+.cc {
+    text-align: center;
+    align-content: center;
+}
+p {
+    cursor: default;
+}
+
+a{
+    color: #000;
+    transition: 0.3s;
+}
+a:hover{
+    color: #fff;
+    text-decoration: none;
+
+    text-shadow: 0px 0px 7px #000000;
+}
+
+.profiletitles{
+    cursor: default;
+    transition: 0.3s;
+}
+.profiletitles:hover{
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0px 0px 10px #000000;
+}
+.aboutmecard{
+  min-height: 50px;
+  background-color: #333;
+  color: white;
+}
+.albumcontainer{
+    height: auto;
+    max-height: 400px;
+    overflow-x: hidden;
+}
+
+.contactcard{
+  color:white;
+  background-color: #333;
+}
+/*main container*/
+.maincontainer{
+    padding-top: 4rem;
+    padding-bottom: 3rem;
+}
+
+.artistcard{
+    transition: 1s;
+    cursor: pointer;
+    color: black;
+}
+.profimg img{
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  border-radius: 50%;
+}
+.artistcard:hover{
+    background-color: #333;
+    text-shadow: 0 0 1px #999;
+    color: white;
+    box-shadow: 0 2px 5px #555;
+
+}
+.albumcard{
+    transition: 1s;
+    cursor: pointer;
+}
+.albumcard:hover{
+    background-color: #333;
+    text-shadow: 0 0 1px #999;
+    color: white;
+    box-shadow: 0 2px 5px #555;
+
+}
+table{
+    border-collapse: collapse;
+    cursor: default;
+}
+th, td {
+    border-collapse: collapse;
+    border-bottom: 1px solid #ddd;
+}
+
 /*Common elements*/
 body{
     padding-top: 3.5rem;
@@ -187,6 +276,7 @@ footer{
   text-decoration: none;*/
   display: block;
     transition: 2s;
+
 }
 
 .dropdown:hover .dropdown-content {display: block; transition: 2s; color: #fff;}

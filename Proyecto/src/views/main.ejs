@@ -13,11 +13,13 @@
         <link rel="stylesheet" href="../css/customscroll.css">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="icon" href="../assets/nm.ico">
+        <link rel="stylesheet" href="../css/modal.css">
         <script src="../js/jquery.js"></script>
+
     </head>
     <body class="mainpg">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top topnav">
-            
+
             <img class="navbar-brand" src="../assets/nm.png">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -25,16 +27,20 @@
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-3">
                     <li class="nav-item active ">
-                        <a class="nav-link" href="#">User <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="#" id="userid"><%= user.USERNAME %></a>
                     </li>
                     <li class="nav-item mx-auto">
                         <%include partials/_dropplaylist%>
                     </li>
-                    
+
                 </ul>
             </div>
         </nav>
+
+        <!--icon for sidenav bar-->
         <span style="font-size:30px;cursor:pointer; margin-top: 0px; " onclick="openNav()">&#8943;</span>
+
+        <!--Side navigation bar-->
         <div class="sidenav" id="mySidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"> &times;</a>
             <a style="cursor: default">Recommended</a>
@@ -43,13 +49,13 @@
             <a href=""  id="topalbums" onclick="closeNav()">Top Albums</a>
             <hr>
             <a style="cursor: default">Your Music</a>
-            <a href="#" onclick="closeNav()">Liked Songs</a>
-            <a href="#" onclick="closeNav()">Liked Albums</a>
-            <a href="#" onclick="closeNav()">Artists you follow</a>
+            <a href="" onclick="closeNav()">Liked Songs</a>
+            <a href="" onclick="closeNav()">Liked Albums</a>
+            <a href="" onclick="closeNav()">Artists you follow</a>
             <hr>
             <a style="cursor: default">Your Profile</a>
-            <a href="/profile">Profile</a>
-            <a href="/mail">Send Email</a>
+            <a href="" id="myprofile" onclick="closeNav()">Profile</a>
+            <a href="/mail" onclick="closeNav()">Send Email</a>
             <a href="" onclick="closeNav()">Check your mail</a>
         </div>
 
@@ -60,10 +66,11 @@
             </div>
         </div>
 
-        
+
         <script src="../js/sidenav.js"></script>
         <script src="../js/viewhandler.js"></script>
-        
+        <script src="../js/modal.js"></script>
+
     </body>
     <footer>
        <% include partials/_player %>

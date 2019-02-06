@@ -1,10 +1,11 @@
 <!-- Modal Module-->
+<button type="button" class="btn" id="uploadbtn">Upload</button>
 <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
                 <h4 class="modal-title w-100 font-weight-bold">Upload a Song</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closecr">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -15,18 +16,13 @@
                     <select form="dataform" name="album">
                         <option selected>Albumx</option>
                         <option>Single</option>
-                    </select>               
+                    </select>
                     <input type="file" name="myfile" multiple/>
                     <hr>
-                    <input type="submit" class="btn btn-primary btn-block" value="Upload">
+                    <input type="submit" class="btn btn-primary btn-block" value="Upload" id="uploadmedia">
                 </form>
-                
-
             </div>
-            
         </div>
     </div>
 </div>
 <script src="../js/modal.js"></script>
-
-
