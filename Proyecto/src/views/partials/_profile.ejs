@@ -5,8 +5,7 @@
           <%if(editable){%>
             <button type="button" class="btn btn-info">Edit</button>
             <button type="button" class="btn btn-success">Save</button>
-            <button type="button" class="btn" id="uploadbtn">Upload</button>
-            <%include _uploads %>
+            <%include _uploads%>
           <%}%>
         </div>
     </div>
@@ -20,16 +19,16 @@
             <div class="card artistcard">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6 cc">
+                        <div class="col-6 cc profimg">
                             <img src="<%= profile.imgdir%>">
-                            <br>
-                            <label id="user_name"><%= username%></label>
                         </div>
                         <div class="col-6">
+                            <label id="user_name"><%= username%></label>
+                            <hr>
                             <label id="user_followers"><%= profile.followers%> Followers</label>
                             <hr>
                             <label id="user_songs"><%= numofsongs%> Songs</label>
-                            <hr>
+                            <br>
                             <label id="user_albums"><%= numofalbums%> Albums</label>
                         </div>
                     </div>
@@ -37,12 +36,12 @@
             </div>
         </div>
         <!--About-->
-        <div class="col-md-5 d-flex align-self-stretch">
-            <div class="card ">
+        <div class="col-md-5 d-flex flex-column ">
+            <div class="card aboutmecard d-flex flex-column align-self-center align-self-stretch flex-fill ">
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <label><h3>About me</h3></label>
+                            <label><h3 class="profiletitles">About me</h3></label>
                         </div>
                     </div>
                     <div class="row">
@@ -55,12 +54,12 @@
             </div>
         </div>
         <!--Contact-->
-        <div class="col-md-3 d-flex align-self-center flex-column">
-            <div class="card">
-                <div class="card-body">
+        <div class="col-md-3 d-flex align-self-center flex-column ">
+            <div class="card contactcard">
+                <div class="card-body ">
                     <div class="row">
                         <div class="col">
-                            <label><h4>Contact</h4></label>
+                            <label><h4 class="profiletitles">Contact</h4></label>
                         </div>
                     </div>
                     <div class="row">
@@ -93,7 +92,7 @@
 <div class="container mt-5">
     <div class="row fixed">
         <div class="col cc">
-            <h2>Albums</h2>
+            <h2 class="profiletitles"> Albums </h2>
         </div>
     </div>
     <!--Fill dynamically-->
@@ -104,6 +103,6 @@
         </div>
     </div>
 </div>
-
+<script src="../js/modal.js"></script>
 <!--User's songs-->
 <%include _profilesongstable%>

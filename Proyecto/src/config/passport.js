@@ -14,10 +14,10 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done){
-      console.log("id: "+id);
+      
       connection.query("SELECT * FROM account WHERE id_account = ? ", [id],
       function(err, rows){
-        console.log(err);
+
         done(err, rows[0]);
       });
     });

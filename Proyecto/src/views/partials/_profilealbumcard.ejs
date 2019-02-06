@@ -1,6 +1,10 @@
+<%if(albums.lenght == 0){%>
+  <h3> Nothing around here <!h3>
+<%}else{%>
+<%for(var i = 0; i < albums.lenght; i++){%>
 <div class="col-3">
     <!--<div class="row-3 cc">-->
-        <div class="card albumcard fadeineff " onclick="playalbum('<%=albums[i].album%>', '<%=albums[i].artist%>')">
+        <div class="card albumcard fadeineff" onclick="playalbum('<%=albums[i].album%>', '<%=albums[i].artist%>')">
             <div class="card-body cc">
                 <!--Album portrait <img src="../assets/defaultdisc.png" class="albumimg">-->
                 <!-- Artist Name -->
@@ -13,5 +17,6 @@
         </div>
     <!--</div>-->
 </div>
-<script src="../js/player.js"></script>
+<%}%>
+<%}%>
 <script src="../js/cardsproccessing.js"></script>

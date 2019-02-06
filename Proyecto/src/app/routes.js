@@ -39,7 +39,7 @@ let profile = {
   imgdir: "",
   followers: ""
 };
-let username;
+let username = null;
 module.exports=(app,passport)=>{
     /*Function used to get the index*/
     app.get('/',(req,res)=>{
@@ -143,7 +143,7 @@ module.exports=(app,passport)=>{
         }
 
 
-        res.redirect('profile');
+        res.end();
 
     });
 
@@ -246,6 +246,7 @@ module.exports=(app,passport)=>{
     });
 
     app.get('/main/myprofile', async(req, res)=>{
+      console.log('Accessing a profile:'+req.user.USERNAME);
       //To get the correct profile, first we need to know what account type it is
       if(req.user.TYPE_ACCOUNT == 'Artist'){
         console.log('acceding my profile');
@@ -267,21 +268,23 @@ module.exports=(app,passport)=>{
         */
         albums.forEach(album=>{
           //read the names on each album and save them on an array.
-          var tmp = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME+'/'+album);
+          if(album!='img.jpeg'){
+            var tmp = fs.readdirSync('../src/public/media_files/'+req.user.USERNAME+'/'+album);
           //save the song's name without the extension.
-          tmp.forEach(song => {
-              songs.push(song.split('.')[0]);
-          });
+            tmp.forEach(song => {
+                songs.push(song.split('.')[0]);
+            });
+          }
         });
         var editable = true;
-        var username = req.user.USERNAME;
+        username = req.user.USERNAME;
         console.log('loading profile of');
         console.log(username);
         var numofsongs = songs.length;
         var numofalbums = albums.length;
         //Check getprofileinfo function documentation
         console.log('retrieving data');
-        getinfo(req.user.USERNAME).then(function(){
+        getinfo().then(function(){
             res.render('partials/_profile',{username, editable, profile, numofsongs, numofalbums, songs, albums});
         }).catch(function(p){
           console.log(p);
@@ -316,7 +319,7 @@ module.exports=(app,passport)=>{
               //console.log('success');
           }
       });
-      var imgdir = dir+'/img.jpeg';
+      var imgdir = '../media_files/'+req.user.USERNAME+'/img.jpeg';
       var query = "INSERT INTO profile (id_account, username, IG_profile_link, FB_profile_link, TW_profile_link, Other_link, desc_profile, dir_profile_img)"+
        "VALUES ((SELECT id_account FROM account WHERE username = '"+req.user.USERNAME+"'), '"+req.user.USERNAME+"','"+req.body.ig+"','"+req.body.fb+"','"
       +req.body.tw+"','"+req.body.other+"','"+req.body.about+"','"+imgdir+"');"
@@ -377,16 +380,18 @@ module.exports=(app,passport)=>{
 function isLoggedIn(req, res, next){
   if(req.isAuthenticated())
     return next();
-  
+
   res.redirect('/');
 }
 
 function getinfo(){
+  if(username == null) return;
   return new Promise(getprofileinfo);
 }
 //WARNING i'm not so sure this will work
 function getprofileinfo(resolve, reject){
-  console.log('perofileof: ' username);
+  console.log('perofileof: '+ username);
+  if(username == null) reject('no user');
   //Select all the account information from the DB according to the required user
   //first query
   connection.query("SELECT * FROM profile WHERE username = '"+username+"'", function(err, result, fields){
@@ -407,10 +412,11 @@ function getprofileinfo(resolve, reject){
           if(err) reject(err);
           else {
             profile.followers = result[0].NFOLLOW;
+            console.log(profile);
             resolve();
           }
         });
       }
   });
-  console.log(profile);
+
 }

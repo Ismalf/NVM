@@ -13,7 +13,9 @@
         <link rel="stylesheet" href="../css/customscroll.css">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="icon" href="../assets/nm.ico">
+        <link rel="stylesheet" href="../css/modal.css">
         <script src="../js/jquery.js"></script>
+
     </head>
     <body class="mainpg">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top topnav">
@@ -47,13 +49,13 @@
             <a href=""  id="topalbums" onclick="closeNav()">Top Albums</a>
             <hr>
             <a style="cursor: default">Your Music</a>
-            <a href="#" onclick="closeNav()">Liked Songs</a>
-            <a href="#" onclick="closeNav()">Liked Albums</a>
-            <a href="#" onclick="closeNav()">Artists you follow</a>
+            <a href="" onclick="closeNav()">Liked Songs</a>
+            <a href="" onclick="closeNav()">Liked Albums</a>
+            <a href="" onclick="closeNav()">Artists you follow</a>
             <hr>
             <a style="cursor: default">Your Profile</a>
-            <a href="" id="myprofile">Profile</a>
-            <a href="/mail">Send Email</a>
+            <a href="" id="myprofile" onclick="closeNav()">Profile</a>
+            <a href="/mail" onclick="closeNav()">Send Email</a>
             <a href="" onclick="closeNav()">Check your mail</a>
         </div>
 
@@ -67,6 +69,7 @@
 
         <script src="../js/sidenav.js"></script>
         <script src="../js/viewhandler.js"></script>
+        <script src="../js/modal.js"></script>
 
     </body>
     <footer>
